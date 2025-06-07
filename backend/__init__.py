@@ -1,0 +1,1 @@
+# Backend package per l'applicazione IA Flashcard 
