@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 @dataclass
 class TextChunk:
@@ -14,6 +14,7 @@ class FlashcardData:
     tipo: str
     punteggio: int
     opzioni: List[str] = None
+    giustificazione: Optional[str] = None
 
 @dataclass
 class PDFStatistics:

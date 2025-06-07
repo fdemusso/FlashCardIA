@@ -15,12 +15,12 @@ def generate_flashcards_from_text(text: str, model_name: str = AI_MODEL_NAME) ->
     try:
         logger.info(f"Generazione flashcard per testo di {len(text.split())} parole")
         
-        # Prompt più semplice e diretto
+        # Prompt aggiornato per includere giustificazioni
         simple_prompt = f"""Analizza questo testo e crea 3 flashcard in formato JSON.
 Per ogni flashcard, usa uno dei seguenti tipi:
 - "aperta": per domande che richiedono una risposta libera
 - "vero_falso": per affermazioni da verificare (risposta deve essere "vero" o "falso")
-- "multipla": per domande con 4 opzioni di risposta (risposta deve essere una delle opzioni)
+- "multipla": per domande con 4 opzioni di risposta (risposta deve essere l'INDICE dell'opzione corretta: 0, 1, 2, o 3)
 
 {text[:1000]}
 
@@ -36,26 +36,31 @@ Rispondi SOLO con array JSON senza markdown, per esempio:
     "domanda": "La Terra è piatta",
     "risposta": "falso",
     "tipo": "vero_falso",
-    "punteggio": 2
+    "punteggio": 2,
+    "giustificazione": "La Terra ha una forma sferica, come dimostrato da secoli di osservazioni astronomiche e prove scientifiche"
   }},
   {{
     "domanda": "Quale di questi è un pianeta?",
-    "risposta": "Marte",
+    "risposta": 0,
     "tipo": "multipla",
     "opzioni": ["Marte", "Luna", "Sole", "Stella"],
-    "punteggio": 3
+    "punteggio": 3,
+    "giustificazione": "Marte è l'unico pianeta tra le opzioni. La Luna è un satellite, il Sole è una stella e 'Stella' è una categoria generale di corpi celesti"
   }}
 ]
 
 REGOLE IMPORTANTI:
 1. Per tipo "multipla":
-   - La risposta DEVE essere una delle opzioni fornite
+   - La risposta DEVE essere un numero (0, 1, 2, o 3) che rappresenta l'indice dell'opzione corretta
    - Le opzioni devono essere 4
-   - La risposta deve essere esattamente uguale a una delle opzioni
+   - L'indice 0 corrisponde alla prima opzione, 1 alla seconda, ecc.
+   - AGGIUNGI sempre il campo "giustificazione" che spiega perché quella è la risposta corretta
 2. Per tipo "vero_falso":
    - La risposta DEVE essere esattamente "vero" o "falso"
+   - AGGIUNGI sempre il campo "giustificazione" che spiega perché l'affermazione è vera o falsa
 3. Per tipo "aperta":
-   - La risposta può essere qualsiasi testo"""
+   - La risposta può essere qualsiasi testo
+   - NON aggiungere il campo "giustificazione" per questo tipo"""
 
         logger.info(f"Invio prompt a Ollama (lunghezza: {len(simple_prompt)} caratteri)")
         
