@@ -45,7 +45,7 @@ ollama pull gemma3:4b-it-qat
 ### 2. Clone e Setup Backend
 ```bash
 git clone <repository-url>
-cd IA-flashcard
+cd "IA flashcard"
 
 # Crea ambiente virtuale
 python -m venv venv
@@ -77,28 +77,34 @@ npm start
 
 ## 🏛️ Architettura del Progetto
 
-### Backend (Python + FastAPI)
+### Struttura Completa
 ```
-backend/
-├── main.py              # Entry point e routing
-├── ai_service.py        # Logica generazione IA
-├── models.py            # Modelli dati Pydantic  
-├── validation.py        # Validazione risposte
-└── pdf_processor.py     # Elaborazione PDF
-```
-
-### Frontend (React + TypeScript)
-```
-frontend/src/
-├── components/
-│   ├── FlashcardViewer/    # Visualizzazione flashcard
-│   ├── FileUpload/         # Gestione upload
-│   ├── Statistics/         # Statistiche documento
-│   └── common/             # Componenti condivisi
-├── hooks/                  # Custom hooks business logic
-├── services/               # API e servizi esterni
-├── types/                  # Interfacce TypeScript
-└── App.tsx                # Orchestratore principale
+IA flashcard/
+├── backend/                 # API Python FastAPI
+│   ├── main.py             # Entry point e routing
+│   ├── ai_service.py       # Logica generazione IA
+│   ├── models.py           # Modelli dati Pydantic  
+│   ├── validation.py       # Validazione risposte
+│   ├── pdf_processor.py    # Elaborazione PDF
+│   └── config.py           # Configurazione applicazione
+├── frontend/               # Applicazione React
+│   ├── public/             # File statici
+│   └── src/
+│       ├── components/
+│       │   ├── FlashcardViewer/  # Visualizzazione flashcard
+│       │   ├── FileUpload/       # Gestione upload
+│       │   ├── Statistics/       # Statistiche documento
+│       │   └── common/           # Componenti condivisi
+│       ├── hooks/          # Custom hooks business logic
+│       ├── services/       # API e servizi esterni
+│       ├── types/          # Interfacce TypeScript
+│       ├── utils/          # Utility e helper functions
+│       └── App.tsx         # Orchestratore principale
+├── docs/                   # Documentazione progetto
+├── venv/                   # Ambiente virtuale Python
+├── requirements.txt        # Dipendenze Python
+├── package.json           # Configurazione Node.js
+└── README.md              # Questo file
 ```
 
 ## 🧪 Testing e Verifica
