@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 import PyPDF2
 import io
 import ollama
@@ -9,6 +10,7 @@ import logging
 import re
 import traceback
 from dataclasses import dataclass
+import asyncio
 
 # Configurazione logging
 logging.basicConfig(level=logging.INFO)
@@ -158,17 +160,43 @@ def generate_flashcards_from_text(text: str, model_name: str) -> List[Dict]:
         simple_prompt = f"""Analizza questo testo e crea 3 flashcard in formato JSON.
 Per ogni flashcard, usa uno dei seguenti tipi:
 - "aperta": per domande che richiedono una risposta libera
-- "vero_falso": per affermazioni da verificare
-- "multipla": per domande con 4 opzioni di risposta
+- "vero_falso": per affermazioni da verificare (risposta deve essere "vero" o "falso")
+- "multipla": per domande con 4 opzioni di risposta (risposta deve essere una delle opzioni)
 
 {text[:1000]}
 
 Rispondi SOLO con array JSON senza markdown, per esempio:
 [
-  {{"domanda":"Qual è la capitale d'Italia?", "risposta":"Roma", "tipo":"aperta", "punteggio":3}},
-  {{"domanda":"La Terra è piatta", "risposta":"falso", "tipo":"vero_falso", "punteggio":2}},
-  {{"domanda":"Quale di questi è un pianeta?", "risposta":"Marte", "tipo":"multipla", "opzioni":["Marte", "Luna", "Sole", "Stella"], "punteggio":3}}
-]"""
+  {{
+    "domanda": "Qual è la capitale d'Italia?",
+    "risposta": "Roma",
+    "tipo": "aperta",
+    "punteggio": 3
+  }},
+  {{
+    "domanda": "La Terra è piatta",
+    "risposta": "falso",
+    "tipo": "vero_falso",
+    "punteggio": 2
+  }},
+  {{
+    "domanda": "Quale di questi è un pianeta?",
+    "risposta": "Marte",
+    "tipo": "multipla",
+    "opzioni": ["Marte", "Luna", "Sole", "Stella"],
+    "punteggio": 3
+  }}
+]
+
+REGOLE IMPORTANTI:
+1. Per tipo "multipla":
+   - La risposta DEVE essere una delle opzioni fornite
+   - Le opzioni devono essere 4
+   - La risposta deve essere esattamente uguale a una delle opzioni
+2. Per tipo "vero_falso":
+   - La risposta DEVE essere esattamente "vero" o "falso"
+3. Per tipo "aperta":
+   - La risposta può essere qualsiasi testo"""
 
         logger.info(f"Invio prompt a Ollama (lunghezza: {len(simple_prompt)} caratteri)")
         
@@ -370,33 +398,64 @@ async def upload_pdf(file: UploadFile = File(...)):
         except Exception as e:
             logger.error(f"Errore nella verifica di Ollama: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Servizio IA non disponibile: {str(e)}")
-        
-        # Genera flashcard per ogni parte di testo
-        all_flashcards = []
-        for i, text_part in enumerate(merged_texts):
-            logger.info(f"Generazione flashcard per la parte {i+1}/{len(merged_texts)}")
+
+        async def generate():
+            # Genera flashcard per ogni parte di testo
+            all_flashcards = []
+            total_parts = len(merged_texts)
             
-            flashcards = generate_flashcards_from_text(text_part, model_name)
-            all_flashcards.extend(flashcards)
+            for i, text_part in enumerate(merged_texts):
+                logger.info(f"Generazione flashcard per la parte {i+1}/{len(merged_texts)}")
+                
+                flashcards = generate_flashcards_from_text(text_part, model_name)
+                all_flashcards.extend(flashcards)
+                
+                # Calcola il progresso
+                progress = {
+                    "type": "progress",
+                    "data": {
+                        "current_part": i + 1,
+                        "total_parts": total_parts,
+                        "percentage": int(((i + 1) / total_parts) * 100)
+                    }
+                }
+                
+                # Invia il progresso
+                yield json.dumps(progress) + "\n"
+                
+                # Limite di sicurezza per evitare troppe flashcard
+                if len(all_flashcards) >= 20:
+                    logger.info("Raggiunto limite massimo di flashcard")
+                    break
             
-            # Limite di sicurezza per evitare troppe flashcard
-            if len(all_flashcards) >= 20:
-                logger.info("Raggiunto limite massimo di flashcard")
-                break
-        
-        if not all_flashcards:
-            raise HTTPException(status_code=500, detail="Impossibile generare flashcard dal contenuto del PDF")
-        
-        logger.info(f"Generate {len(all_flashcards)} flashcard totali")
-        
-        return {
-            "flashcards": all_flashcards,
-            "statistics": {
-                "pages_processed": len(chunks),
-                "total_words": total_words,
-                "flashcards_generated": len(all_flashcards)
+            if not all_flashcards:
+                error = {
+                    "type": "error",
+                    "data": "Impossibile generare flashcard dal contenuto del PDF"
+                }
+                yield json.dumps(error) + "\n"
+                return
+            
+            logger.info(f"Generate {len(all_flashcards)} flashcard totali")
+            
+            # Invia il risultato finale
+            result = {
+                "type": "complete",
+                "data": {
+                    "flashcards": all_flashcards,
+                    "statistics": {
+                        "pages_processed": len(chunks),
+                        "total_words": total_words,
+                        "flashcards_generated": len(all_flashcards)
+                    }
+                }
             }
-        }
+            yield json.dumps(result) + "\n"
+
+        return StreamingResponse(
+            generate(),
+            media_type="application/x-ndjson"
+        )
         
     except HTTPException:
         raise
