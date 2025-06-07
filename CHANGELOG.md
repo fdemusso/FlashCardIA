@@ -1,5 +1,87 @@
 # Changelog - Sistema Flashcard IA
 
+## Versione 3.0 - Refactoring Completo Frontend
+
+### 🏗️ **Modularizzazione Architettura Frontend**
+- **Suddivisione App.tsx**: Diviso da monolitico (450+ righe) in componenti modulari
+- **Architettura Hook-Based**: Implementati custom hooks per separare logica business dalla UI
+- **Separazione Responsabilità**: Struttura modulare con cartelle dedicate per ogni concern
+
+### 📁 **Nuova Struttura del Progetto**
+```
+frontend/src/
+├── components/
+│   ├── FlashcardViewer/     # Componenti visualizzazione flashcard
+│   │   ├── FlashcardViewer.tsx
+│   │   ├── QuestionCard.tsx
+│   │   ├── AnswerSection.tsx
+│   │   └── NavigationButtons.tsx
+│   ├── FileUpload/          # Componenti upload file
+│   │   └── FileUpload.tsx
+│   ├── Statistics/          # Componente statistiche
+│   │   └── Statistics.tsx
+│   └── common/              # Componenti riutilizzabili
+│       ├── LoadingSpinner.tsx
+│       └── ErrorMessage.tsx
+├── hooks/                   # Custom hooks logica business
+│   ├── useFileUpload.ts
+│   └── useFlashcards.ts
+├── services/                # Servizi API e validazione
+│   └── api.ts
+├── types/                   # Interfacce TypeScript centralizzate
+│   └── index.ts
+└── utils/                   # Utility functions
+```
+
+### ✨ **Componenti Modulari Creati**
+
+#### Hooks Custom
+- **`useFileUpload`**: Gestione stato upload, validazione file, chiamate API
+- **`useFlashcards`**: Gestione stato flashcard, navigazione, risposte utente
+
+#### Componenti UI
+- **`QuestionCard`**: Rendering domande per ogni tipo (multipla, vero/falso, aperta)
+- **`AnswerSection`**: Visualizzazione risposte e giustificazioni
+- **`NavigationButtons`**: Controlli navigazione con logica dinamica per tipo
+- **`FileUpload`**: Upload con progress bar e gestione errori
+- **`Statistics`**: Display statistiche elaborazione documento
+- **`LoadingSpinner`**: Spinner riutilizzabile con progress bar
+- **`ErrorMessage`**: Gestione messaggi errore con dismissal
+
+#### Servizi
+- **`api.ts`**: Centralizzazione chiamate HTTP e gestione streaming
+- **`types/index.ts`**: Interfacce TypeScript per type safety
+
+### 🎯 **Benefici Architetturali**
+
+#### Manutenibilità ✅
+- Codice più facile da leggere, modificare e debuggare
+- Ogni componente ha una responsabilità specifica e ben definita
+
+#### Testabilità ✅  
+- Ogni componente e hook può essere testato in isolamento
+- Logica business separata dalla presentazione
+
+#### Riutilizzabilità ✅
+- Componenti modulari riutilizzabili in altri contesti
+- Hook custom condivisibili tra componenti
+
+#### Scalabilità ✅
+- Architettura pronta per future espansioni
+- Facile aggiunta di nuove funzionalità senza refactoring
+
+#### Type Safety ✅
+- Interfacce TypeScript centralizzate
+- Riduzione drastica di errori runtime
+
+### 🔧 **Dettagli Tecnici**
+- **App.tsx**: Ridotto da 450+ righe a ~50 righe di orchestrazione
+- **Compilation**: Build success confermato senza errori
+- **Retrocompatibilità**: Tutte le funzionalità esistenti mantengono il comportamento
+- **Performance**: Nessun impatto negativo sulle prestazioni
+
+---
+
 ## Versione 2.1 - Correzione Coerenza Risposte Multiple
 
 ### 🐛 **Bug Fix Critico**
