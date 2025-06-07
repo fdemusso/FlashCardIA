@@ -1,8 +1,8 @@
-# 🔄 Documentazione API REST
+# 🔄 REST API Documentation
 
-## 📋 Panoramica
+## 📋 Overview
 
-L'API REST del backend fornisce endpoint per l'elaborazione di documenti PDF e la generazione di flashcard tramite intelligenza artificiale. Utilizza FastAPI per un'interfaccia moderna e ben documentata.
+The backend REST API provides endpoints for PDF document processing and flashcard generation through artificial intelligence. It uses FastAPI for a modern and well-documented interface.
 
 ## 🌐 Base URL
 
@@ -10,35 +10,35 @@ L'API REST del backend fornisce endpoint per l'elaborazione di documenti PDF e l
 http://localhost:8000
 ```
 
-## 📡 Endpoint Disponibili
+## 📡 Available Endpoints
 
 ### POST /upload-pdf
 
-Elabora un file PDF e genera flashcard tramite IA con streaming del progresso.
+Processes a PDF file and generates flashcards through AI with progress streaming.
 
-#### Richiesta
+#### Request
 
-**Metodo**: `POST`  
+**Method**: `POST`  
 **Content-Type**: `multipart/form-data`  
-**Parametri**:
+**Parameters**:
 
-| Parametro | Tipo | Obbligatorio | Descrizione |
-|-----------|------|--------------|-------------|
-| `file` | File | Sì | File PDF da elaborare (max 10MB) |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `file` | File | Yes | PDF file to process (max 10MB) |
 
-**Esempio cURL**:
+**cURL Example**:
 ```bash
 curl -X POST \
   http://localhost:8000/upload-pdf \
-  -F "file=@documento.pdf"
+  -F "file=@document.pdf"
 ```
 
-#### Risposta
+#### Response
 
 **Content-Type**: `application/x-ndjson`  
-**Formato**: Stream di eventi JSON separati da newline (NDJSON)
+**Format**: Stream of JSON events separated by newlines (NDJSON)
 
-##### Eventi di Progresso
+##### Progress Events
 
 ```json
 {
@@ -51,12 +51,12 @@ curl -X POST \
 }
 ```
 
-**Campi**:
-- `current_part`: Parte attualmente in elaborazione (1-based)
-- `total_parts`: Numero totale di parti da elaborare
-- `percentage`: Percentuale di completamento (0-100)
+**Fields**:
+- `current_part`: Part currently being processed (1-based)
+- `total_parts`: Total number of parts to process
+- `percentage`: Completion percentage (0-100)
 
-##### Evento di Completamento
+##### Completion Event
 
 ```json
 {
@@ -64,25 +64,25 @@ curl -X POST \
   "data": {
     "flashcards": [
       {
-        "domanda": "Qual è la capitale d'Italia?",
-        "risposta": "Roma",
+        "domanda": "What is the capital of Italy?",
+        "risposta": "Rome",
         "tipo": "aperta",
         "punteggio": 3
       },
       {
-        "domanda": "La Terra è piatta",
+        "domanda": "The Earth is flat",
         "risposta": "falso",
         "tipo": "vero_falso",
         "punteggio": 2,
-        "giustificazione": "La Terra ha una forma sferica..."
+        "giustificazione": "The Earth has a spherical shape..."
       },
       {
-        "domanda": "Quale di questi è un pianeta?",
-        "risposta": "Marte",
+        "domanda": "Which of these is a planet?",
+        "risposta": "Mars",
         "tipo": "multipla",
-        "opzioni": ["Marte", "Luna", "Sole", "Stella"],
+        "opzioni": ["Mars", "Moon", "Sun", "Star"],
         "punteggio": 4,
-        "giustificazione": "Marte è l'unico pianeta tra le opzioni..."
+        "giustificazione": "Mars is the only planet among the options..."
       }
     ],
     "statistics": {
@@ -94,63 +94,63 @@ curl -X POST \
 }
 ```
 
-**Campi Flashcard**:
-- `domanda`: La domanda formulata dall'IA
-- `risposta`: La risposta corretta
-- `tipo`: Tipo di domanda (`aperta`, `vero_falso`, `multipla`)
-- `punteggio`: Difficoltà da 1 a 5
-- `opzioni`: Array di 4 opzioni (solo per tipo `multipla`)
-- `giustificazione`: Spiegazione della risposta (per tipi `vero_falso` e `multipla`)
+**Flashcard Fields**:
+- `domanda`: The question formulated by AI
+- `risposta`: The correct answer
+- `tipo`: Question type (`aperta`, `vero_falso`, `multipla`)
+- `punteggio`: Difficulty from 1 to 5
+- `opzioni`: Array of 4 options (only for `multipla` type)
+- `giustificazione`: Answer explanation (for `vero_falso` and `multipla` types)
 
-**Campi Statistics**:
-- `pages_processed`: Numero di pagine elaborate
-- `total_words`: Parole totali estratte
-- `flashcards_generated`: Numero di flashcard create
+**Statistics Fields**:
+- `pages_processed`: Number of pages processed
+- `total_words`: Total words extracted
+- `flashcards_generated`: Number of flashcards created
 
-##### Evento di Errore
+##### Error Event
 
 ```json
 {
   "type": "error",
-  "data": "Impossibile generare flashcard dal contenuto del PDF"
+  "data": "Unable to generate flashcards from PDF content"
 }
 ```
 
-#### Codici di Stato
+#### Status Codes
 
-| Codice | Descrizione | Dettagli |
-|--------|-------------|----------|
-| `200` | Successo | Stream NDJSON con eventi |
-| `400` | Richiesta non valida | File non PDF, contenuto insufficiente |
-| `500` | Errore server | Servizio IA non disponibile, errori elaborazione |
+| Code | Description | Details |
+|------|-------------|---------|
+| `200` | Success | NDJSON stream with events |
+| `400` | Bad request | Non-PDF file, insufficient content |
+| `500` | Server error | AI service unavailable, processing errors |
 
-#### Errori Comuni
+#### Common Errors
 
-**400 - File non valido**:
+**400 - Invalid file**:
 ```json
 {
-  "detail": "Il file deve essere un PDF"
+  "detail": "File must be a PDF"
 }
 ```
 
-**400 - Contenuto insufficiente**:
+**400 - Insufficient content**:
 ```json
 {
-  "detail": "Il PDF contiene troppo poco testo per generare flashcard significative."
+  "detail": "PDF contains too little text to generate meaningful flashcards."
 }
 ```
 
-**500 - Servizio IA non disponibile**:
+**500 - AI service unavailable**:
 ```json
 {
-  "detail": "Servizio IA non disponibile: Connection refused"
+  "detail": "AI service unavailable: Connection refused"
 }
 ```
 
-**500 - Modello non trovato**:
+**500 - Model not found**:
 ```json
 {
-  "detail": "Modello IA richiesto non disponibile"
+  "detail": "Required AI model not available"
 }
 ```
 
@@ -158,23 +158,23 @@ curl -X POST \
 
 ### GET /health
 
-Verifica lo stato di salute dell'applicazione e dei servizi dipendenti.
+Checks the health status of the application and dependent services.
 
-#### Richiesta
+#### Request
 
-**Metodo**: `GET`  
-**Parametri**: Nessuno
+**Method**: `GET`  
+**Parameters**: None
 
-**Esempio cURL**:
+**cURL Example**:
 ```bash
 curl http://localhost:8000/health
 ```
 
-#### Risposta
+#### Response
 
 **Content-Type**: `application/json`
 
-##### Risposta di Successo
+##### Success Response
 
 ```json
 {
@@ -186,14 +186,14 @@ curl http://localhost:8000/health
 }
 ```
 
-**Campi**:
-- `status`: Stato generale (`healthy` | `unhealthy`)
-- `ollama_available`: Ollama è raggiungibile
-- `model_available`: Il modello richiesto è disponibile
-- `models`: Lista dei modelli installati
-- `error`: Messaggio di errore (null se tutto ok)
+**Fields**:
+- `status`: General status (`healthy` | `unhealthy`)
+- `ollama_available`: Ollama is reachable
+- `model_available`: Required model is available
+- `models`: List of installed models
+- `error`: Error message (null if everything is ok)
 
-##### Risposta di Errore
+##### Error Response
 
 ```json
 {
@@ -205,23 +205,23 @@ curl http://localhost:8000/health
 }
 ```
 
-#### Codici di Stato
+#### Status Codes
 
-| Codice | Descrizione |
-|--------|-------------|
-| `200` | Sempre restituito (stato nel body) |
+| Code | Description |
+|------|-------------|
+| `200` | Always returned (status in body) |
 
 ---
 
-## 🔧 Configurazione Client
+## 🔧 Client Configuration
 
 ### JavaScript/TypeScript
 
 ```typescript
-// Configurazione base
+// Base configuration
 const API_BASE_URL = 'http://localhost:8000';
 
-// Upload con gestione streaming
+// Upload with streaming handling
 async function uploadPDF(file: File): Promise<{flashcards: any[], statistics: any}> {
   const formData = new FormData();
   formData.append('file', file);
@@ -249,7 +249,7 @@ async function uploadPDF(file: File): Promise<{flashcards: any[], statistics: an
       const event = JSON.parse(line);
       
       if (event.type === 'progress') {
-        console.log(`Progresso: ${event.data.percentage}%`);
+        console.log(`Progress: ${event.data.percentage}%`);
       } else if (event.type === 'complete') {
         return event.data;
       } else if (event.type === 'error') {
@@ -275,7 +275,7 @@ import json
 API_BASE_URL = 'http://localhost:8000'
 
 def upload_pdf(file_path: str):
-    """Upload PDF e gestione streaming"""
+    """PDF upload and streaming handling"""
     with open(file_path, 'rb') as f:
         files = {'file': f}
         response = requests.post(
@@ -289,7 +289,7 @@ def upload_pdf(file_path: str):
                 event = json.loads(line.decode('utf-8'))
                 
                 if event['type'] == 'progress':
-                    print(f"Progresso: {event['data']['percentage']}%")
+                    print(f"Progress: {event['data']['percentage']}%")
                 elif event['type'] == 'complete':
                     return event['data']
                 elif event['type'] == 'error':
@@ -301,11 +301,11 @@ def check_health():
     return response.json()
 ```
 
-## 🚦 Gestione Errori
+## 🚦 Error Handling
 
-### Strategia di Retry
+### Retry Strategy
 
-Per errori temporanei (5xx), implementare retry con backoff esponenziale:
+For temporary errors (5xx), implement retry with exponential backoff:
 
 ```typescript
 async function uploadWithRetry(file: File, maxRetries = 3): Promise<any> {
@@ -315,7 +315,7 @@ async function uploadWithRetry(file: File, maxRetries = 3): Promise<any> {
     } catch (error) {
       if (attempt === maxRetries) throw error;
       
-      // Backoff esponenziale: 1s, 2s, 4s
+      // Exponential backoff: 1s, 2s, 4s
       const delay = Math.pow(2, attempt - 1) * 1000;
       await new Promise(resolve => setTimeout(resolve, delay));
     }
@@ -325,16 +325,16 @@ async function uploadWithRetry(file: File, maxRetries = 3): Promise<any> {
 
 ### Timeout
 
-Configurare timeout appropriati per operazioni lunghe:
+Configure appropriate timeouts for long operations:
 
 ```typescript
 const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minuti
+const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minutes
 
 try {
   const response = await fetch(url, {
     signal: controller.signal,
-    // ... altre opzioni
+    // ... other options
   });
 } finally {
   clearTimeout(timeoutId);
@@ -343,31 +343,31 @@ try {
 
 ## 📊 Rate Limiting
 
-Attualmente non implementato, ma raccomandazioni per produzione:
+Currently not implemented, but production recommendations:
 
-- **Upload**: Max 10 richieste/minuto per IP
-- **Health**: Max 60 richieste/minuto per IP
+- **Upload**: Max 10 requests/minute per IP
+- **Health**: Max 60 requests/minute per IP
 - **File size**: Max 10MB per upload
 
-## 🔒 Sicurezza
+## 🔒 Security
 
-### Validazioni Implementate
+### Implemented Validations
 
-- **Tipo file**: Solo PDF accettati
-- **Dimensione**: Limite 10MB
-- **Contenuto**: Verifica presenza testo estraibile
+- **File type**: Only PDFs accepted
+- **Size**: 10MB limit
+- **Content**: Verify presence of extractable text
 
-### Raccomandazioni Produzione
+### Production Recommendations
 
-- Implementare autenticazione (JWT/OAuth)
-- Rate limiting per prevenire abuse
-- Validazione più rigorosa dei file
-- Logging delle richieste per audit
-- HTTPS obbligatorio
+- Implement authentication (JWT/OAuth)
+- Rate limiting to prevent abuse
+- Stricter file validation
+- Request logging for audit
+- Mandatory HTTPS
 
 ## 🧪 Testing
 
-### Test di Integrazione
+### Integration Tests
 
 ```bash
 # Health check
@@ -380,9 +380,9 @@ curl -X POST \
   --max-time 300
 ```
 
-### Metriche di Performance
+### Performance Metrics
 
-- **Upload piccolo** (< 1MB): < 30 secondi
-- **Upload medio** (1-5MB): < 2 minuti  
-- **Upload grande** (5-10MB): < 5 minuti
-- **Health check**: < 1 secondo 
+- **Small upload** (< 1MB): < 30 seconds
+- **Medium upload** (1-5MB): < 2 minutes  
+- **Large upload** (5-10MB): < 5 minutes
+- **Health check**: < 1 second 

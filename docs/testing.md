@@ -1,12 +1,12 @@
-# 🧪 Guida Testing e Debugging
+# 🧪 Testing and Debugging Guide
 
-## 📋 Panoramica
+## 📋 Overview
 
-Questa guida fornisce strategie complete per testare e debuggare l'applicazione Generatore di Flashcard IA, coprendo sia il backend Python che il frontend React.
+This guide provides comprehensive strategies for testing and debugging the AI Flashcard Generator application, covering both the Python backend and React frontend.
 
-## 🏗️ Strategia di Testing
+## 🏗️ Testing Strategy
 
-### Piramide dei Test
+### Test Pyramid
 
 ```
     🔺 E2E Tests
@@ -14,32 +14,32 @@ Questa guida fornisce strategie complete per testare e debuggare l'applicazione 
   🔺🔺🔺 Unit Tests
 ```
 
-- **Unit Tests**: Funzioni individuali e componenti isolati
-- **Integration Tests**: Interazione tra moduli
-- **E2E Tests**: Flussi utente completi
+- **Unit Tests**: Individual functions and isolated components
+- **Integration Tests**: Interaction between modules
+- **E2E Tests**: Complete user flows
 
-### Copertura Target
+### Target Coverage
 
-- **Backend**: 80%+ copertura del codice
-- **Frontend**: 70%+ copertura componenti
-- **API**: 100% endpoint testati
-- **Critical Path**: 95%+ copertura
+- **Backend**: 80%+ code coverage
+- **Frontend**: 70%+ component coverage
+- **API**: 100% endpoints tested
+- **Critical Path**: 95%+ coverage
 
-## 🔧 Testing Backend
+## 🔧 Backend Testing
 
-### Setup Ambiente Test
+### Test Environment Setup
 
 ```bash
-# Installazione dipendenze test
+# Install test dependencies
 cd backend
 pip install pytest pytest-cov pytest-asyncio httpx
 
-# Struttura test
+# Test structure
 mkdir -p tests/{unit,integration,fixtures}
 touch tests/__init__.py
 ```
 
-### Configurazione pytest
+### pytest Configuration
 
 ```python
 # backend/pytest.ini
@@ -69,31 +69,31 @@ from ai_service import generate_flashcards_from_text, clean_json_response
 class TestAIService:
     
     def test_clean_json_response_valid_array(self):
-        """Test pulizia risposta JSON valida"""
+        """Test valid JSON response cleanup"""
         input_text = '```json\n[{"domanda": "test"}]\n```'
         result = clean_json_response(input_text)
         assert result == '[{"domanda": "test"}]'
     
     def test_clean_json_response_single_object(self):
-        """Test conversione oggetto singolo in array"""
+        """Test single object to array conversion"""
         input_text = '{"domanda": "test"}'
         result = clean_json_response(input_text)
         assert result == '[{"domanda": "test"}]'
     
     def test_clean_json_response_empty(self):
-        """Test gestione input vuoto"""
+        """Test empty input handling"""
         result = clean_json_response("")
         assert result == "[]"
     
     @patch('ai_service.ollama.generate')
     def test_generate_flashcards_success(self, mock_generate):
-        """Test generazione flashcard con successo"""
-        # Mock risposta Ollama
+        """Test successful flashcard generation"""
+        # Mock Ollama response
         mock_generate.return_value = {
-            'response': '[{"domanda": "Test?", "risposta": "Risposta", "tipo": "aperta", "punteggio": 3}]'
+            'response': '[{"domanda": "Test?", "risposta": "Answer", "tipo": "aperta", "punteggio": 3}]'
         }
         
-        result = generate_flashcards_from_text("Testo di test")
+        result = generate_flashcards_from_text("Test text")
         
         assert len(result) == 1
         assert result[0]['domanda'] == "Test?"
@@ -101,10 +101,10 @@ class TestAIService:
     
     @patch('ai_service.ollama.generate')
     def test_generate_flashcards_ollama_error(self, mock_generate):
-        """Test gestione errore Ollama"""
+        """Test Ollama error handling"""
         mock_generate.side_effect = Exception("Connection error")
         
-        result = generate_flashcards_from_text("Testo di test")
+        result = generate_flashcards_from_text("Test text")
         
         assert result == []
 ```

@@ -1,120 +1,120 @@
-# 🎯 Generatore di Flashcard IA
+# 🎯 AI Flashcard Generator
 
-Un'applicazione web moderna che genera flashcard educative personalizzate da documenti PDF utilizzando l'intelligenza artificiale locale (Ollama con modello Gemma). Il sistema è stato progettato con architettura modulare sia nel backend che nel frontend per garantire scalabilità e manutenibilità.
+A modern web application that generates personalized educational flashcards from PDF documents using local artificial intelligence (Ollama with Gemma model). The system has been designed with modular architecture in both backend and frontend to ensure scalability and maintainability.
 
-## ✨ Caratteristiche Principali
+## ✨ Key Features
 
-### 🤖 Generazione IA Avanzata
-- **3 tipi di domande**: Multiple choice, Vero/Falso, Domande aperte
-- **Giustificazioni automatiche**: Spiegazioni dettagliate per ogni risposta
-- **Validazione intelligente**: Sistema di fallback per garantire coerenza delle risposte
-- **Punteggio di difficoltà**: Ogni flashcard ha un livello di difficoltà da 1 a 5
+### 🤖 Advanced AI Generation
+- **3 types of questions**: Multiple choice, True/False, Open-ended questions
+- **Automatic explanations**: Detailed explanations for each answer
+- **Intelligent validation**: Fallback system to ensure response consistency
+- **Difficulty scoring**: Each flashcard has a difficulty level from 1 to 5
 
-### 🏗️ Architettura Modulare
-- **Backend modularizzato**: Separazione in servizi (`ai_service`, `models`, `validation`)
-- **Frontend con hook personalizzati**: Logica business separata dalla UI
-- **Componenti riutilizzabili**: Architettura scalabile e manutenibile
-- **Type Safety completo**: TypeScript per ridurre errori runtime
+### 🏗️ Modular Architecture
+- **Modularized backend**: Separation into services (`ai_service`, `models`, `validation`)
+- **Frontend with custom hooks**: Business logic separated from UI
+- **Reusable components**: Scalable and maintainable architecture
+- **Complete type safety**: TypeScript to reduce runtime errors
 
-### 🎨 Interfaccia Utente Moderna
-- **Design responsive**: Ottimizzato per ogni dispositivo
-- **Progress tracking**: Barra di progresso durante l'elaborazione
-- **Feedback visivo**: Indicatori chiari per risposte corrette/errate
-- **Navigazione intuitiva**: Controlli semplici e accessibili
+### 🎨 Modern User Interface
+- **Responsive design**: Optimized for every device
+- **Progress tracking**: Progress bar during processing
+- **Visual feedback**: Clear indicators for correct/incorrect answers
+- **Intuitive navigation**: Simple and accessible controls
 
-## 📋 Requisiti di Sistema
+## 📋 System Requirements
 
-### Software Necessario
-- **Python** 3.8 o superiore
-- **Node.js** 16 o superiore  
-- **Ollama** (versione più recente)
-- **Git** (per il clone del repository)
+### Required Software
+- **Python** 3.8 or higher
+- **Node.js** 16 or higher  
+- **Ollama** (latest version)
+- **Git** (for repository cloning)
 
-### Modello IA
-Il progetto utilizza il modello `gemma3:4b-it-qat` di Ollama, ottimizzato per l'italiano.
+### AI Model
+The project uses Ollama's `gemma3:4b-it-qat` model, optimized for Italian.
 
-## 🚀 Installazione Rapida
+## 🚀 Quick Installation
 
-### 1. Setup Ollama
+### 1. Ollama Setup
 ```bash
-# Installa Ollama da https://ollama.ai/
-# Poi scarica il modello:
+# Install Ollama from https://ollama.ai/
+# Then download the model:
 ollama pull gemma3:4b-it-qat
 ```
 
-### 2. Clone e Setup Backend
+### 2. Clone and Backend Setup
 ```bash
 git clone <repository-url>
 cd "IA flashcard"
 
-# Crea ambiente virtuale
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Installa dipendenze
+# Install dependencies
 pip install -r requirements.txt
 
-# Avvia backend
+# Start backend
 cd backend
 uvicorn main:app --reload
 ```
 
-### 3. Setup Frontend
+### 3. Frontend Setup
 ```bash
-# In una nuova finestra terminale
+# In a new terminal window
 cd frontend
 npm install
 npm start
 ```
 
-## 🎮 Come Utilizzare
+## 🎮 How to Use
 
-1. **Verifica prerequisiti**: Assicurati che Ollama sia attivo con il modello corretto
-2. **Accedi all'app**: Apri `http://localhost:3000` nel browser
-3. **Carica PDF**: Seleziona un documento PDF (max 10MB)
-4. **Attendi elaborazione**: Il sistema processa il documento e genera le flashcard
-5. **Studia**: Naviga tra le flashcard e verifica le tue conoscenze
+1. **Check prerequisites**: Make sure Ollama is running with the correct model
+2. **Access the app**: Open `http://localhost:3000` in your browser
+3. **Upload PDF**: Select a PDF document (max 10MB)
+4. **Wait for processing**: The system processes the document and generates flashcards
+5. **Study**: Navigate through flashcards and test your knowledge
 
-## 🏛️ Architettura del Progetto
+## 🏛️ Project Architecture
 
-### Struttura Completa
+### Complete Structure
 ```
 IA flashcard/
-├── backend/                 # API Python FastAPI
-│   ├── main.py             # Entry point e routing
-│   ├── ai_service.py       # Logica generazione IA
-│   ├── models.py           # Modelli dati Pydantic  
-│   ├── validation.py       # Validazione risposte
-│   ├── pdf_processor.py    # Elaborazione PDF
-│   └── config.py           # Configurazione applicazione
-├── frontend/               # Applicazione React
-│   ├── public/             # File statici
+├── backend/                 # Python FastAPI API
+│   ├── main.py             # Entry point and routing
+│   ├── ai_service.py       # AI generation logic
+│   ├── models.py           # Pydantic data models  
+│   ├── validation.py       # Response validation
+│   ├── pdf_processor.py    # PDF processing
+│   └── config.py           # Application configuration
+├── frontend/               # React Application
+│   ├── public/             # Static files
 │   └── src/
 │       ├── components/
-│       │   ├── FlashcardViewer/  # Visualizzazione flashcard
-│       │   ├── FileUpload/       # Gestione upload
-│       │   ├── Statistics/       # Statistiche documento
-│       │   └── common/           # Componenti condivisi
+│       │   ├── FlashcardViewer/  # Flashcard visualization
+│       │   ├── FileUpload/       # Upload management
+│       │   ├── Statistics/       # Document statistics
+│       │   └── common/           # Shared components
 │       ├── hooks/          # Custom hooks business logic
-│       ├── services/       # API e servizi esterni
-│       ├── types/          # Interfacce TypeScript
-│       ├── utils/          # Utility e helper functions
-│       └── App.tsx         # Orchestratore principale
-├── docs/                   # Documentazione progetto
-├── venv/                   # Ambiente virtuale Python
-├── requirements.txt        # Dipendenze Python
-├── package.json           # Configurazione Node.js
-└── README.md              # Questo file
+│       ├── services/       # API and external services
+│       ├── types/          # TypeScript interfaces
+│       ├── utils/          # Utility and helper functions
+│       └── App.tsx         # Main orchestrator
+├── docs/                   # Project documentation
+├── venv/                   # Python virtual environment
+├── requirements.txt        # Python dependencies
+├── package.json           # Node.js configuration
+└── README.md              # This file
 ```
 
-## 🧪 Testing e Verifica
+## 🧪 Testing and Verification
 
 ### Health Check
 ```bash
 curl http://localhost:8000/health
 ```
 
-### Test Componenti
+### Component Testing
 ```bash
 # Backend
 cd backend
@@ -125,52 +125,52 @@ cd frontend
 npm test
 ```
 
-## 🔧 Risoluzione Problemi
+## 🔧 Troubleshooting
 
-### Problemi Comuni
+### Common Issues
 
-| Problema | Soluzione |
-|----------|-----------|
-| **Ollama non risponde** | Verifica che il servizio sia attivo: `ollama list` |
-| **Modello non trovato** | Scarica il modello: `ollama pull gemma3:4b-it-qat` |
-| **Errori CORS** | Assicurati che frontend sia su porta 3000 |
-| **PDF troppo grande** | Limite 10MB, riduci dimensioni file |
-| **Timeout elaborazione** | File complessi richiedono più tempo |
+| Problem | Solution |
+|---------|----------|
+| **Ollama not responding** | Verify the service is running: `ollama list` |
+| **Model not found** | Download the model: `ollama pull gemma3:4b-it-qat` |
+| **CORS errors** | Make sure frontend is on port 3000 |
+| **PDF too large** | 10MB limit, reduce file size |
+| **Processing timeout** | Complex files require more time |
 
-### Log e Debug
-- **Backend logs**: Console dove gira `uvicorn`
-- **Frontend logs**: DevTools del browser (F12)
+### Logs and Debug
+- **Backend logs**: Console where `uvicorn` is running
+- **Frontend logs**: Browser DevTools (F12)
 - **Ollama logs**: `ollama logs`
 
-## 📈 Roadmap e Contributi
+## 📈 Roadmap and Contributions
 
-### Prossime Funzionalità
-- [ ] Esportazione flashcard in formati esterni
-- [ ] Sistema di revisione spaziale
-- [ ] Supporto per più modelli IA
-- [ ] Modalità offline completa
-- [ ] Analytics di apprendimento
+### Upcoming Features
+- [ ] Export flashcards to external formats
+- [ ] Spaced repetition system
+- [ ] Support for multiple AI models
+- [x] Complete offline mode
+- [ ] Learning analytics
 
-### Come Contribuire
-1. **Fork** del repository
-2. **Crea branch** per la feature: `git checkout -b feature/nome-feature`
-3. **Commit** modifiche: `git commit -m 'Aggiungi nuova feature'`
-4. **Push** al branch: `git push origin feature/nome-feature`
-5. **Apri Pull Request**
+### How to Contribute
+1. **Fork** the repository
+2. **Create branch** for feature: `git checkout -b feature/feature-name`
+3. **Commit** changes: `git commit -m 'Add new feature'`
+4. **Push** to branch: `git push origin feature/feature-name`
+5. **Open Pull Request**
 
 ## 📊 Versioning
 
-Vedi [CHANGELOG.md](CHANGELOG.md) per la cronologia dettagliata delle versioni.
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
-- **v3.0**: Refactoring completo frontend con architettura modulare
-- **v2.1**: Correzione coerenza risposte multiple choice
-- **v2.0**: Aggiunta giustificazioni automatiche
-- **v1.0**: Release iniziale
+- **v3.0**: Complete frontend refactoring with modular architecture
+- **v2.1**: Multiple choice response consistency fix
+- **v2.0**: Added automatic explanations
+- **v1.0**: Initial release
 
-## 📝 Licenza
+## 📝 License
 
-Questo progetto è rilasciato sotto **licenza MIT**. Vedi [LICENSE](LICENSE) per i dettagli.
+This project is released under **MIT license**. See [LICENSE](LICENSE) for details.
 
 ---
 
-⭐ **Se questo progetto ti è utile, lascia una stella su GitHub!** 
+⭐ **If this project is useful to you, leave a star on GitHub!** 

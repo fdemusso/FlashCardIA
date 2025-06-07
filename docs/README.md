@@ -1,82 +1,82 @@
-# 📚 Documentazione Completa - Generatore di Flashcard IA
+# 📚 Complete Documentation - AI Flashcard Generator
 
-## 🏗️ Panoramica dell'Architettura
+## 🏗️ Architecture Overview
 
-Questo progetto è diviso in due parti principali:
-- **Backend**: API REST in Python con FastAPI che gestisce l'elaborazione PDF e la generazione di flashcard tramite IA
-- **Frontend**: Applicazione React+TypeScript per l'interfaccia utente
+This project is divided into two main parts:
+- **Backend**: REST API in Python with FastAPI that handles PDF processing and AI flashcard generation
+- **Frontend**: React+TypeScript application for the user interface
 
-## 📂 Struttura del Progetto
+## 📂 Project Structure
 
 ```
 IA-flashcard/
-├── backend/               # API FastAPI in Python
-│   ├── main.py           # Entry point e routing principale
-│   ├── ai_service.py     # Servizio per generazione flashcard con Ollama
-│   ├── models.py         # Modelli di dati Pydantic/DataClass
-│   ├── validation.py     # Validazione e pulizia flashcard
-│   ├── pdf_processor.py  # Estrazione e elaborazione testo PDF
-│   └── config.py         # Configurazioni e costanti
-├── frontend/             # Applicazione React
+├── backend/               # Python FastAPI API
+│   ├── main.py           # Entry point and main routing
+│   ├── ai_service.py     # Service for flashcard generation with Ollama
+│   ├── models.py         # Pydantic/DataClass data models
+│   ├── validation.py     # Flashcard validation and cleaning
+│   ├── pdf_processor.py  # PDF text extraction and processing
+│   └── config.py         # Configurations and constants
+├── frontend/             # React Application
 │   └── src/
-│       ├── App.tsx       # Componente principale
-│       ├── components/   # Componenti React riutilizzabili
-│       ├── hooks/        # Custom hooks per logica business
-│       ├── services/     # Servizi API e comunicazione
-│       ├── types/        # Definizioni TypeScript
-│       └── utils/        # Utility e helper functions
-└── docs/                 # Documentazione completa
+│       ├── App.tsx       # Main component
+│       ├── components/   # Reusable React components
+│       ├── hooks/        # Custom hooks for business logic
+│       ├── services/     # API services and communication
+│       ├── types/        # TypeScript definitions
+│       └── utils/        # Utility and helper functions
+└── docs/                 # Complete documentation
 ```
 
-## 🔄 Flusso di Funzionamento
+## 🔄 Workflow
 
-1. **Upload PDF**: L'utente carica un file PDF tramite l'interfaccia
-2. **Estrazione Testo**: Il backend estrae e pulisce il testo dal PDF
-3. **Generazione IA**: Il testo viene inviato a Ollama per generare flashcard
-4. **Validazione**: Le flashcard vengono validate e corrette
-5. **Visualizzazione**: Il frontend presenta le flashcard in modo interattivo
+1. **PDF Upload**: User uploads a PDF file through the interface
+2. **Text Extraction**: Backend extracts and cleans text from PDF
+3. **AI Generation**: Text is sent to Ollama to generate flashcards
+4. **Validation**: Flashcards are validated and corrected
+5. **Display**: Frontend presents flashcards interactively
 
-## 📖 Sezioni della Documentazione
+## 📖 Documentation Sections
 
-- [📱 **Frontend**](./frontend.md) - Documentazione completa dei componenti React
-- [🔧 **Backend**](./backend.md) - Documentazione dell'API e servizi Python
-- [🚀 **Deploy**](./deployment.md) - Guida al deployment e configurazione
-- [🧪 **Testing**](./testing.md) - Guide per test e debugging
-- [🔄 **API**](./api.md) - Documentazione delle API REST
+- [📱 **Frontend**](./frontend.md) - Complete documentation of React components
+- [🔧 **Backend**](./backend.md) - API and Python services documentation
+- [🚀 **Deploy**](./deployment.md) - Deployment and configuration guide
+- [🧪 **Testing**](./testing.md) - Testing and debugging guides
+- [🔄 **API**](./api.md) - REST API documentation
 
-## 🛠️ Tecnologie Utilizzate
+## 🛠️ Technologies Used
 
 ### Backend
-- **FastAPI**: Framework web moderno per Python
-- **Ollama**: Servizio IA locale per generazione testo
-- **PyPDF2**: Libreria per estrazione testo da PDF
-- **Pydantic**: Validazione dati e serializzazione
+- **FastAPI**: Modern web framework for Python
+- **Ollama**: Local AI service for text generation
+- **PyPDF2**: Library for PDF text extraction
+- **Pydantic**: Data validation and serialization
 
 ### Frontend
-- **React**: Libreria UI per JavaScript
-- **TypeScript**: Superset tipizzato di JavaScript
-- **Tailwind CSS**: Framework CSS utility-first
-- **Custom Hooks**: Pattern per logica business riutilizzabile
+- **React**: UI library for JavaScript
+- **TypeScript**: Typed superset of JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **Custom Hooks**: Pattern for reusable business logic
 
-## 🎯 Funzionalità Principali
+## 🎯 Main Features
 
-### 🤖 Generazione IA Intelligente
-- **3 Tipi di Domande**: Multiple choice, Vero/Falso, Aperte
-- **Giustificazioni Automatiche**: Spiegazioni per ogni risposta
-- **Validazione Robusta**: Sistema di fallback per coerenza
-- **Punteggio Difficoltà**: Rating da 1 a 5 per ogni flashcard
+### 🤖 Intelligent AI Generation
+- **3 Question Types**: Multiple choice, True/False, Open-ended
+- **Automatic Explanations**: Explanations for each answer
+- **Robust Validation**: Fallback system for consistency
+- **Difficulty Scoring**: Rating from 1 to 5 for each flashcard
 
-### 🎨 Interfaccia Moderna
-- **Design Responsive**: Funziona su ogni dispositivo
-- **Progress Tracking**: Barra di progresso real-time
-- **Feedback Visivo**: Indicatori per risposte corrette/errate
-- **Navigazione Fluida**: Controlli intuitivi
+### 🎨 Modern Interface
+- **Responsive Design**: Works on every device
+- **Progress Tracking**: Real-time progress bar
+- **Visual Feedback**: Indicators for correct/incorrect answers
+- **Fluid Navigation**: Intuitive controls
 
-### 🔧 Architettura Modulare
-- **Separazione Concern**: Backend e frontend ben separati
-- **Hook Personalizzati**: Logica business isolata
-- **Componenti Riutilizzabili**: Codice DRY e manutenibile
-- **Type Safety**: TypeScript per ridurre errori
+### 🔧 Modular Architecture
+- **Separation of Concerns**: Well-separated backend and frontend
+- **Custom Hooks**: Isolated business logic
+- **Reusable Components**: DRY and maintainable code
+- **Type Safety**: TypeScript to reduce errors
 
 ## 🔍 Quick Start
 
@@ -99,6 +99,6 @@ IA-flashcard/
    ollama pull gemma3:4b-it-qat
    ```
 
-## 📞 Supporto
+## 📞 Support
 
-Per domande specifiche, consulta le sezioni dedicate della documentazione o apri un issue su GitHub. 
+For specific questions, consult the dedicated documentation sections or open an issue on GitHub. 

@@ -1,65 +1,65 @@
-# 📱 Documentazione Frontend
+# 📱 Frontend Documentation
 
-## 📋 Panoramica
+## 📋 Overview
 
-Il frontend è sviluppato in React con TypeScript, fornisce un'interfaccia utente moderna e responsive per l'interazione con il sistema di generazione flashcard. Utilizza un'architettura modulare basata su custom hooks per separare la logica business dalla presentazione.
+The frontend is developed in React with TypeScript, providing a modern and responsive user interface for interaction with the flashcard generation system. It uses a modular architecture based on custom hooks to separate business logic from presentation.
 
-## 🏗️ Architettura
+## 🏗️ Architecture
 
-### Principi di Design
+### Design Principles
 
-- **Separazione delle Responsabilità**: Logica business nei custom hooks, UI nei componenti
-- **Type Safety**: TypeScript per prevenire errori runtime
-- **Componenti Riutilizzabili**: Design modulare per facilità di manutenzione
-- **State Management Locale**: Utilizzo di React hooks per gestione stato
-- **Responsive Design**: Tailwind CSS per interfaccia adattiva
+- **Separation of Responsibilities**: Business logic in custom hooks, UI in components
+- **Type Safety**: TypeScript to prevent runtime errors
+- **Reusable Components**: Modular design for ease of maintenance
+- **Local State Management**: Using React hooks for state management
+- **Responsive Design**: Tailwind CSS for adaptive interface
 
-### Struttura dei File
+### File Structure
 
 ```
 frontend/src/
-├── App.tsx                    # Componente principale e orchestratore
-├── index.tsx                  # Entry point dell'applicazione
-├── index.css                  # Stili globali e configurazione Tailwind
-├── components/                # Componenti React riutilizzabili
-│   ├── FlashcardViewer/      # Visualizzazione e navigazione flashcard
-│   ├── FileUpload/           # Gestione upload PDF
-│   ├── Statistics/           # Visualizzazione statistiche documento
-│   └── common/               # Componenti condivisi (errori, loading)
-├── hooks/                    # Custom hooks per logica business
-│   ├── useFlashcards.ts      # Gestione stato flashcard e navigazione
-│   └── useFileUpload.ts      # Gestione upload file e comunicazione API
-├── services/                 # Servizi per comunicazione esterna
-│   └── api.ts                # Client API per backend
-├── types/                    # Definizioni TypeScript
-│   └── index.ts              # Interfacce e tipi condivisi
-└── utils/                    # Utility e helper functions (vuoto)
+├── App.tsx                    # Main component and orchestrator
+├── index.tsx                  # Application entry point
+├── index.css                  # Global styles and Tailwind configuration
+├── components/                # Reusable React components
+│   ├── FlashcardViewer/      # Flashcard visualization and navigation
+│   ├── FileUpload/           # PDF upload management
+│   ├── Statistics/           # Document statistics visualization
+│   └── common/               # Shared components (errors, loading)
+├── hooks/                    # Custom hooks for business logic
+│   ├── useFlashcards.ts      # Flashcard state and navigation management
+│   └── useFileUpload.ts      # File upload and API communication management
+├── services/                 # Services for external communication
+│   └── api.ts                # API client for backend
+├── types/                    # TypeScript definitions
+│   └── index.ts              # Shared interfaces and types
+└── utils/                    # Utility and helper functions (empty)
 ```
 
-## 📄 Documentazione File per File
+## 📄 File-by-File Documentation
 
-### 🚀 App.tsx - Componente Principale
+### 🚀 App.tsx - Main Component
 
-**Scopo**: Orchestratore principale dell'applicazione, gestisce il flusso tra upload e visualizzazione flashcard.
+**Purpose**: Main orchestrator of the application, manages flow between upload and flashcard visualization.
 
-**Responsabilità**:
-- Coordinamento tra upload e visualizzazione
-- Gestione dello stato globale dell'applicazione
-- Routing condizionale basato sullo stato
-- Gestione degli eventi di reset e navigazione
+**Responsibilities**:
+- Coordination between upload and visualization
+- Global application state management
+- Conditional routing based on state
+- Reset and navigation event handling
 
-**Hook Utilizzati**:
-- `useFileUpload`: Per gestione upload PDF
-- `useFlashcards`: Per gestione flashcard e navigazione
+**Hooks Used**:
+- `useFileUpload`: For PDF upload management
+- `useFlashcards`: For flashcard and navigation management
 
-### 🎯 types/index.ts - Definizioni TypeScript
+### 🎯 types/index.ts - TypeScript Definitions
 
-**Scopo**: Centralizza tutte le definizioni di tipi per garantire type safety.
+**Purpose**: Centralizes all type definitions to ensure type safety.
 
-**Interfacce Principali**:
+**Main Interfaces**:
 
 ```typescript
-// Struttura di una flashcard
+// Flashcard structure
 interface Flashcard {
   domanda: string;
   risposta: string;
@@ -69,14 +69,14 @@ interface Flashcard {
   giustificazione?: string;
 }
 
-// Statistiche di elaborazione
+// Processing statistics
 interface Statistics {
   pages_processed: number;
   total_words: number;
   flashcards_generated: number;
 }
 
-// Stato dell'upload
+// Upload state
 interface UploadState {
   file: File | null;
   loading: boolean;
@@ -85,7 +85,7 @@ interface UploadState {
   generationProgress: GenerationProgress | null;
 }
 
-// Stato delle flashcard
+// Flashcard state
 interface FlashcardState {
   flashcards: Flashcard[];
   statistics: Statistics | null;
@@ -96,65 +96,65 @@ interface FlashcardState {
 }
 ```
 
-### 🔧 services/api.ts - Client API
+### 🔧 services/api.ts - API Client
 
-**Scopo**: Gestisce la comunicazione con il backend tramite API REST.
+**Purpose**: Handles communication with backend via REST APIs.
 
-**Funzioni Principali**:
-- `uploadPDF()`: Upload file PDF con gestione streaming
-- Parsing eventi NDJSON per progresso real-time
-- Gestione errori di rete e timeout
-- Type safety per risposte API
+**Main Functions**:
+- `uploadPDF()`: PDF file upload with streaming handling
+- NDJSON event parsing for real-time progress
+- Network error and timeout handling
+- Type safety for API responses
 
-### 🎣 hooks/useFileUpload.ts - Hook Upload
+### 🎣 hooks/useFileUpload.ts - Upload Hook
 
-**Scopo**: Gestisce tutto il processo di upload file e comunicazione con backend.
+**Purpose**: Handles the entire file upload process and backend communication.
 
-**Funzionalità**:
-- Selezione e validazione file PDF
-- Upload con progress tracking
-- Parsing stream NDJSON dal backend
-- Gestione stati di loading ed errori
-- Reset dello stato per nuovi upload
+**Features**:
+- PDF file selection and validation
+- Upload with progress tracking
+- NDJSON stream parsing from backend
+- Loading and error state management
+- State reset for new uploads
 
-**Stati Gestiti**:
-- File selezionato
-- Stato di caricamento
-- Messaggi di progresso
-- Errori di upload
-- Progresso elaborazione
+**Managed States**:
+- Selected file
+- Loading status
+- Progress messages
+- Upload errors
+- Processing progress
 
-### 🃏 hooks/useFlashcards.ts - Hook Flashcard
+### 🃏 hooks/useFlashcards.ts - Flashcard Hook
 
-**Scopo**: Gestisce lo stato delle flashcard e la logica di navigazione.
+**Purpose**: Manages flashcard state and navigation logic.
 
-**Funzionalità**:
-- Navigazione tra flashcard (avanti/indietro)
-- Gestione risposte utente
-- Toggle visualizzazione risposta
-- Calcolo punteggio
-- Reset stato per nuova sessione
+**Features**:
+- Flashcard navigation (forward/backward)
+- User answer management
+- Answer visibility toggle
+- Score calculation
+- State reset for new session
 
-**Stati Gestiti**:
-- Lista flashcard
-- Indice flashcard corrente
-- Visibilità risposta
-- Risposta utente
-- Punteggio totale
-- Statistiche documento
+**Managed States**:
+- Flashcard list
+- Current flashcard index
+- Answer visibility
+- User answer
+- Total score
+- Document statistics
 
-## 🧩 Componenti Dettagliati
+## 🧩 Detailed Components
 
 ### 📁 FileUpload/FileUpload.tsx
 
-**Scopo**: Interfaccia per selezione e upload file PDF.
+**Purpose**: Interface for PDF file selection and upload.
 
-**Caratteristiche**:
-- Drag & drop per file PDF
-- Validazione tipo file
-- Progress bar durante upload
-- Messaggi di stato dinamici
-- Gestione errori con dismissal
+**Features**:
+- Drag & drop for PDF files
+- File type validation
+- Progress bar during upload
+- Dynamic status messages
+- Error handling with dismissal
 
 **Props**:
 ```typescript
@@ -168,156 +168,156 @@ interface FileUploadProps {
 
 ### 🎴 FlashcardViewer/FlashcardViewer.tsx
 
-**Scopo**: Container principale per visualizzazione flashcard.
+**Purpose**: Main container for flashcard visualization.
 
-**Responsabilità**:
-- Orchestrazione componenti flashcard
-- Gestione layout responsive
-- Coordinamento navigazione
-- Gestione eventi utente
+**Responsibilities**:
+- Flashcard component orchestration
+- Responsive layout management
+- Navigation coordination
+- User event handling
 
 ### 🎴 FlashcardViewer/QuestionCard.tsx
 
-**Scopo**: Visualizza la domanda e gestisce l'interazione utente.
+**Purpose**: Displays question and handles user interaction.
 
-**Funzionalità**:
-- Rendering domande per tipo (aperta, vero/falso, multipla)
-- Input dinamico basato su tipo domanda
-- Validazione risposte
-- Feedback visivo per correttezza
-- Gestione punteggio difficoltà
+**Features**:
+- Question rendering by type (open, true/false, multiple)
+- Dynamic input based on question type
+- Answer validation
+- Visual feedback for correctness
+- Difficulty score management
 
-**Tipi di Domande**:
-- **Aperte**: Campo di testo libero
-- **Vero/Falso**: Radio buttons
-- **Multiple Choice**: Lista opzioni selezionabili
+**Question Types**:
+- **Open**: Free text field
+- **True/False**: Radio buttons
+- **Multiple Choice**: Selectable option list
 
 ### 🎴 FlashcardViewer/AnswerSection.tsx
 
-**Scopo**: Mostra la risposta corretta e la giustificazione.
+**Purpose**: Shows correct answer and explanation.
 
-**Caratteristiche**:
-- Visualizzazione condizionale
-- Feedback correttezza risposta
-- Giustificazione per domande chiuse
-- Styling differenziato per tipo
+**Features**:
+- Conditional display
+- Answer correctness feedback
+- Explanation for closed questions
+- Differentiated styling by type
 
 ### 🎴 FlashcardViewer/NavigationButtons.tsx
 
-**Scopo**: Controlli di navigazione tra flashcard.
+**Purpose**: Navigation controls between flashcards.
 
-**Funzionalità**:
-- Navigazione avanti/indietro
-- Disabilitazione intelligente bottoni
-- Contatore posizione
-- Reset sessione
-- Indicatori visivi stato
+**Features**:
+- Forward/backward navigation
+- Intelligent button disabling
+- Position counter
+- Session reset
+- Visual status indicators
 
 ### 📊 Statistics/Statistics.tsx
 
-**Scopo**: Visualizza statistiche di elaborazione documento.
+**Purpose**: Displays document processing statistics.
 
-**Metriche Mostrate**:
-- Pagine elaborate
-- Parole totali estratte
-- Flashcard generate
-- Metriche derivate (parole per pagina, etc.)
+**Metrics Shown**:
+- Pages processed
+- Total words extracted
+- Flashcards generated
+- Derived metrics (words per page, etc.)
 
 ### 🔧 common/ErrorMessage.tsx
 
-**Scopo**: Componente riutilizzabile per messaggi di errore.
+**Purpose**: Reusable component for error messages.
 
-**Caratteristiche**:
-- Styling consistente
-- Dismissal opzionale
-- Icone di stato
-- Accessibilità
+**Features**:
+- Consistent styling
+- Optional dismissal
+- Status icons
+- Accessibility
 
 ### 🔧 common/LoadingSpinner.tsx
 
-**Scopo**: Indicatore di caricamento riutilizzabile.
+**Purpose**: Reusable loading indicator.
 
-**Varianti**:
-- Spinner semplice
-- Con messaggio personalizzato
-- Dimensioni configurabili
-- Animazioni smooth
+**Variants**:
+- Simple spinner
+- With custom message
+- Configurable dimensions
+- Smooth animations
 
-## 🎨 Styling e Design
+## 🎨 Styling and Design
 
 ### Tailwind CSS
 
-**Approccio**: Utility-first CSS framework per rapid prototyping e design consistente.
+**Approach**: Utility-first CSS framework for rapid prototyping and consistent design.
 
-**Vantaggi**:
-- Classi predefinite per spacing, colori, layout
-- Responsive design built-in
-- Purging automatico CSS non utilizzato
-- Customizzazione tramite configurazione
+**Advantages**:
+- Predefined classes for spacing, colors, layout
+- Built-in responsive design
+- Automatic purging of unused CSS
+- Customization through configuration
 
 ### Design System
 
-**Colori**:
-- Primario: Blu per azioni principali
-- Secondario: Grigio per testi e bordi
-- Successo: Verde per feedback positivo
-- Errore: Rosso per errori e warning
-- Neutro: Grigi per background e contenitori
+**Colors**:
+- Primary: Blue for main actions
+- Secondary: Gray for texts and borders
+- Success: Green for positive feedback
+- Error: Red for errors and warnings
+- Neutral: Grays for backgrounds and containers
 
 **Typography**:
 - Font system: Inter/system fonts
-- Scale tipografica: text-sm, text-base, text-lg, text-xl, etc.
-- Pesi: font-normal, font-medium, font-semibold, font-bold
+- Typographic scale: text-sm, text-base, text-lg, text-xl, etc.
+- Weights: font-normal, font-medium, font-semibold, font-bold
 
 **Spacing**:
-- Sistema basato su multipli di 4px
-- Classi: p-2, p-4, p-6, m-2, m-4, etc.
-- Gap per flexbox/grid: gap-2, gap-4, etc.
+- System based on 4px multiples
+- Classes: p-2, p-4, p-6, m-2, m-4, etc.
+- Gap for flexbox/grid: gap-2, gap-4, etc.
 
-## 🔄 Flusso di Dati
+## 🔄 Data Flow
 
 ### Upload Flow
 
-1. **Selezione File**: Utente seleziona PDF tramite FileUpload
-2. **Validazione**: Controllo tipo file e dimensioni
-3. **Upload**: Invio file al backend con progress tracking
-4. **Streaming**: Ricezione eventi progresso via NDJSON
-5. **Completamento**: Ricezione flashcard e statistiche
-6. **Transizione**: Passaggio a modalità visualizzazione
+1. **File Selection**: User selects PDF via FileUpload
+2. **Validation**: File type and size checking
+3. **Upload**: File sent to backend with progress tracking
+4. **Streaming**: Progress events received via NDJSON
+5. **Completion**: Flashcards and statistics received
+6. **Transition**: Switch to visualization mode
 
 ### Flashcard Flow
 
-1. **Inizializzazione**: Caricamento prima flashcard
-2. **Interazione**: Utente inserisce risposta
-3. **Validazione**: Controllo correttezza risposta
-4. **Feedback**: Visualizzazione risposta corretta
-5. **Navigazione**: Passaggio alla flashcard successiva
-6. **Completamento**: Fine sessione con punteggio
+1. **Initialization**: First flashcard loading
+2. **Interaction**: User enters answer
+3. **Validation**: Answer correctness checking
+4. **Feedback**: Correct answer display
+5. **Navigation**: Move to next flashcard
+6. **Completion**: Session end with score
 
-## 🚦 Gestione Errori
+## 🚦 Error Handling
 
-### Tipologie di Errori
+### Error Types
 
-1. **Errori di Upload**:
-   - File non valido
-   - Dimensioni eccessive
-   - Errori di rete
+1. **Upload Errors**:
+   - Invalid file
+   - File too large
+   - Network errors
 
-2. **Errori di Elaborazione**:
-   - Backend non disponibile
-   - Timeout elaborazione
-   - Contenuto PDF insufficiente
+2. **Processing Errors**:
+   - Backend unavailable
+   - Processing timeout
+   - Insufficient PDF content
 
-3. **Errori di Navigazione**:
-   - Stato inconsistente
-   - Dati mancanti
+3. **Navigation Errors**:
+   - Inconsistent state
+   - Missing data
 
-### Strategie di Recovery
+### Recovery Strategies
 
-- **Retry automatico** per errori di rete temporanei
-- **Fallback graceful** per funzionalità non critiche
-- **Messaggi informativi** per guidare l'utente
-- **Reset stato** per ripartire da capo
+- **Automatic retry** for temporary network errors
+- **Graceful fallback** for non-critical features
+- **Informative messages** to guide user
+- **State reset** to start over
 
 ## 📱 Responsive Design
 
@@ -327,59 +327,59 @@ interface FileUploadProps {
 - **Tablet**: 640px - 1024px (md/lg)
 - **Desktop**: > 1024px (xl)
 
-### Adattamenti
+### Adaptations
 
-- **Layout**: Stack verticale su mobile, grid su desktop
-- **Typography**: Dimensioni scalate per leggibilità
-- **Spacing**: Padding/margin ridotti su mobile
-- **Interazioni**: Touch-friendly su mobile
+- **Layout**: Vertical stack on mobile, grid on desktop
+- **Typography**: Scaled sizes for readability
+- **Spacing**: Reduced padding/margin on mobile
+- **Interactions**: Touch-friendly on mobile
 
-## 🧪 Testing e Debug
+## 🧪 Testing and Debug
 
-### Strumenti di Debug
+### Debug Tools
 
-- **React DevTools**: Ispezione componenti e stato
+- **React DevTools**: Component and state inspection
 - **Browser DevTools**: Network, console, performance
-- **TypeScript**: Type checking compile-time
-- **ESLint**: Linting e best practices
+- **TypeScript**: Compile-time type checking
+- **ESLint**: Linting and best practices
 
 ### Testing Strategy
 
-- **Unit Tests**: Funzioni utility e hooks
-- **Component Tests**: Rendering e interazioni
-- **Integration Tests**: Flussi completi
-- **E2E Tests**: Scenari utente reali
+- **Unit Tests**: Utility functions and hooks
+- **Component Tests**: Rendering and interactions
+- **Integration Tests**: Complete flows
+- **E2E Tests**: Real user scenarios
 
 ## 🚀 Performance
 
-### Ottimizzazioni
+### Optimizations
 
-- **Code Splitting**: Lazy loading componenti
-- **Memoization**: React.memo per componenti puri
-- **Bundle Optimization**: Tree shaking e minification
-- **Image Optimization**: Formati moderni e lazy loading
+- **Code Splitting**: Lazy loading components
+- **Memoization**: React.memo for pure components
+- **Bundle Optimization**: Tree shaking and minification
+- **Image Optimization**: Modern formats and lazy loading
 
-### Metriche
+### Metrics
 
 - **First Contentful Paint**: < 1.5s
 - **Largest Contentful Paint**: < 2.5s
 - **Cumulative Layout Shift**: < 0.1
 - **First Input Delay**: < 100ms
 
-## 🔧 Build e Deploy
+## 🔧 Build and Deploy
 
 ### Development
 
 ```bash
-npm start          # Avvio development server
-npm run build      # Build produzione
-npm test           # Esecuzione test
-npm run lint       # Linting codice
+npm start          # Start development server
+npm run build      # Production build
+npm test           # Run tests
+npm run lint       # Code linting
 ```
 
 ### Production
 
-- **Build ottimizzato**: Minification e compression
-- **Static hosting**: Compatibile con Netlify, Vercel, etc.
-- **Environment variables**: Configurazione per diversi ambienti
-- **Service worker**: Caching e offline support (opzionale) 
+- **Optimized build**: Minification and compression
+- **Static hosting**: Compatible with Netlify, Vercel, etc.
+- **Environment variables**: Configuration for different environments
+- **Service worker**: Caching and offline support (optional) 
