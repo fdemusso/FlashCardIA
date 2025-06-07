@@ -148,7 +148,7 @@ npm test
 - [ ] Export flashcards to external formats
 - [ ] Spaced repetition system
 - [ ] Support for multiple AI models
-- [ ] Complete offline mode
+- [x] Complete offline mode
 - [ ] Learning analytics
 
 ### How to Contribute
