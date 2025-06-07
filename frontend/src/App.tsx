@@ -82,47 +82,37 @@ const App: React.FC = () => {
             setLoadingMessage(`Caricamento PDF: ${percentCompleted}%`);
           }
         },
-        responseType: 'stream'
+        responseType: 'text'
       });
 
       setLoadingMessage('Generazione delle flashcard in corso...');
       
-      // Leggi lo stream di risposta
-      const reader = response.data.getReader();
-      let result = '';
+      // Processa la risposta streaming
+      const lines = response.data.split('\n').filter((line: string) => line.trim());
+      let lastProgress = 0;
       
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        
-        // Converti il chunk in stringa
-        const chunk = new TextDecoder().decode(value);
-        result += chunk;
-        
-        // Processa ogni oggetto JSON nel chunk
-        const lines = result.split('\n');
-        result = lines.pop() || ''; // Mantieni l'ultima linea incompleta
-        
-        for (const line of lines) {
-          if (line.trim()) {
-            try {
-              const data = JSON.parse(line);
-              if (data.type === 'progress') {
-                setGenerationProgress(data.data);
-                setLoadingMessage(`Generazione delle flashcard: ${data.data.percentage}% (Parte ${data.data.current_part} di ${data.data.total_parts})`);
-              } else if (data.type === 'complete') {
-                setFlashcards(data.data.flashcards);
-                setStatistics(data.data.statistics);
-                setCurrentCard(0);
-                setShowAnswer(false);
-                setScore(0);
-                setLoadingMessage('');
-                setGenerationProgress(null);
-              }
-            } catch (e) {
-              console.error('Errore nel parsing della risposta:', e);
-            }
+      for (const line of lines) {
+        try {
+          const data = JSON.parse(line);
+          
+          if (data.type === 'progress') {
+            setGenerationProgress(data.data);
+            setLoadingMessage(`Generazione delle flashcard: ${data.data.percentage}% (Parte ${data.data.current_part} di ${data.data.total_parts})`);
+            lastProgress = data.data.percentage;
+          } else if (data.type === 'complete') {
+            setFlashcards(data.data.flashcards);
+            setStatistics(data.data.statistics);
+            setCurrentCard(0);
+            setShowAnswer(false);
+            setScore(0);
+            setLoadingMessage('');
+            setGenerationProgress(null);
+          } else if (data.type === 'error') {
+            throw new Error(data.data);
           }
+        } catch (e) {
+          console.error('Errore nel parsing della risposta:', e);
+          throw new Error('Errore nel formato della risposta dal server');
         }
       }
     } catch (error) {
@@ -360,6 +350,19 @@ const App: React.FC = () => {
                   <FaSpinner className="animate-spin mr-2" />
                   {loadingMessage || 'Elaborazione in corso...'}
                 </div>
+                {generationProgress && (
+                  <div className="mt-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" 
+                        style={{ width: `${generationProgress.percentage}%` }}
+                      ></div>
+                    </div>
+                    <div className="text-sm mt-1 text-center">
+                      {generationProgress.percentage}% completato
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             
