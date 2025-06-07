@@ -1,21 +1,33 @@
 import React from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { Flashcard } from '../../types';
+import { AnswerSection } from './AnswerSection';
+import { NavigationButtons } from './NavigationButtons';
 
 interface QuestionCardProps {
   card: Flashcard;
   userAnswer: string;
   showAnswer: boolean;
+  currentCard: number;
+  totalCards: number;
   onAnswerChange: (answer: string) => void;
   onAnswerSubmit: () => void;
+  onPrevious: () => void;
+  onNext: () => void;
+  onToggleAnswer: () => void;
 }
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({
   card,
   userAnswer,
   showAnswer,
+  currentCard,
+  totalCards,
   onAnswerChange,
-  onAnswerSubmit
+  onAnswerSubmit,
+  onPrevious,
+  onNext,
+  onToggleAnswer
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
@@ -105,6 +117,24 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           rows={4}
         />
       )}
+
+      {/* Sezione risposte - ora all'interno del riquadro */}
+      <AnswerSection 
+        card={card} 
+        showAnswer={showAnswer} 
+      />
+
+      {/* Pulsanti di navigazione - ora all'interno del riquadro */}
+      <NavigationButtons
+        card={card}
+        currentCard={currentCard}
+        totalCards={totalCards}
+        showAnswer={showAnswer}
+        userAnswer={userAnswer}
+        onPrevious={onPrevious}
+        onNext={onNext}
+        onToggleAnswer={onToggleAnswer}
+      />
     </div>
   );
 }; 

@@ -1,8 +1,6 @@
 import React from 'react';
 import { FlashcardState } from '../../types';
 import { QuestionCard } from './QuestionCard';
-import { AnswerSection } from './AnswerSection';
-import { NavigationButtons } from './NavigationButtons';
 
 interface FlashcardViewerProps {
   flashcardState: FlashcardState;
@@ -54,21 +52,10 @@ export const FlashcardViewer: React.FC<FlashcardViewerProps> = ({
         card={card}
         userAnswer={userAnswer}
         showAnswer={showAnswer}
-        onAnswerChange={onAnswerChange}
-        onAnswerSubmit={handleAnswerSubmit}
-      />
-      
-      <AnswerSection 
-        card={card} 
-        showAnswer={showAnswer} 
-      />
-      
-      <NavigationButtons
-        card={card}
         currentCard={currentCard}
         totalCards={flashcards.length}
-        showAnswer={showAnswer}
-        userAnswer={userAnswer}
+        onAnswerChange={onAnswerChange}
+        onAnswerSubmit={handleAnswerSubmit}
         onPrevious={onPrevious}
         onNext={onNext}
         onToggleAnswer={onToggleAnswer}
