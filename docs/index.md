@@ -1,151 +1,151 @@
-# 📚 Indice Documentazione - Generatore di Flashcard IA
+# 📚 Documentation Index - AI Flashcard Generator
 
-Benvenuto nella documentazione completa del progetto **Generatore di Flashcard IA**! Questa raccolta di documenti fornisce tutto il necessario per comprendere, utilizzare, sviluppare e deployare l'applicazione.
+Welcome to the complete documentation of the **AI Flashcard Generator** project! This collection of documents provides everything needed to understand, use, develop, and deploy the application.
 
-## 🗂️ Struttura della Documentazione
+## 🗂️ Documentation Structure
 
-### 📖 Documentazione Generale
+### 📖 General Documentation
 
-| Documento | Descrizione | Destinatari |
-|-----------|-------------|-------------|
-| **[README.md](../README.md)** | Panoramica del progetto e quick start | Tutti gli utenti |
-| **[CHANGELOG.md](../CHANGELOG.md)** | Cronologia delle versioni e modifiche | Sviluppatori, utenti |
+| Document | Description | Target Audience |
+|----------|-------------|-----------------|
+| **[README.md](../README.md)** | Project overview and quick start | All users |
+| **[CHANGELOG.md](../CHANGELOG.md)** | Version history and changes | Developers, users |
 
-### 🏗️ Documentazione Tecnica
+### 🏗️ Technical Documentation
 
-| Documento | Descrizione | Destinatari |
-|-----------|-------------|-------------|
-| **[Backend](./backend.md)** | Documentazione completa del backend Python/FastAPI | Sviluppatori backend |
-| **[Frontend](./frontend.md)** | Documentazione completa del frontend React/TypeScript | Sviluppatori frontend |
-| **[API](./api.md)** | Documentazione delle API REST | Sviluppatori, integratori |
+| Document | Description | Target Audience |
+|----------|-------------|-----------------|
+| **[Backend](./backend.md)** | Complete Python/FastAPI backend documentation | Backend developers |
+| **[Frontend](./frontend.md)** | Complete React/TypeScript frontend documentation | Frontend developers |
+| **[API](./api.md)** | REST API documentation | Developers, integrators |
 
-### 🚀 Deployment e Operazioni
+### 🚀 Deployment and Operations
 
-| Documento | Descrizione | Destinatari |
-|-----------|-------------|-------------|
-| **[Deployment](./deployment.md)** | Guida completa al deployment | DevOps, amministratori |
-| **[Testing](./testing.md)** | Guide per test e debugging | Sviluppatori, QA |
+| Document | Description | Target Audience |
+|----------|-------------|-----------------|
+| **[Deployment](./deployment.md)** | Complete deployment guide | DevOps, administrators |
+| **[Testing](./testing.md)** | Testing and debugging guides | Developers, QA |
 
-## 🎯 Percorsi di Lettura Consigliati
+## 🎯 Recommended Reading Paths
 
-### 👨‍💻 Per Sviluppatori Nuovi al Progetto
+### 👨‍💻 For Developers New to the Project
 
-1. **[README.md](../README.md)** - Comprendi il progetto e fai il setup iniziale
-2. **[Backend](./backend.md)** - Studia l'architettura del backend
-3. **[Frontend](./frontend.md)** - Comprendi la struttura del frontend
-4. **[API](./api.md)** - Familiarizza con le API
-5. **[Testing](./testing.md)** - Impara a testare il codice
+1. **[README.md](../README.md)** - Understand the project and initial setup
+2. **[Backend](./backend.md)** - Study the backend architecture
+3. **[Frontend](./frontend.md)** - Understand the frontend structure
+4. **[API](./api.md)** - Familiarize with the APIs
+5. **[Testing](./testing.md)** - Learn how to test the code
 
-### 🚀 Per DevOps e Deployment
+### 🚀 For DevOps and Deployment
 
-1. **[README.md](../README.md)** - Panoramica generale
-2. **[Deployment](./deployment.md)** - Setup completo per produzione
-3. **[API](./api.md)** - Comprendi gli endpoint per monitoring
-4. **[Backend](./backend.md)** - Configurazioni e dipendenze
+1. **[README.md](../README.md)** - General overview
+2. **[Deployment](./deployment.md)** - Complete production setup
+3. **[API](./api.md)** - Understand endpoints for monitoring
+4. **[Backend](./backend.md)** - Configurations and dependencies
 
-### 🔧 Per Integratori e API Users
+### 🔧 For Integrators and API Users
 
-1. **[API](./api.md)** - Documentazione completa delle API
-2. **[Backend](./backend.md)** - Comprendi la logica di business
-3. **[Testing](./testing.md)** - Test di integrazione
+1. **[API](./api.md)** - Complete API documentation
+2. **[Backend](./backend.md)** - Understand business logic
+3. **[Testing](./testing.md)** - Integration testing
 
-### 📱 Per Frontend Developers
+### 📱 For Frontend Developers
 
-1. **[Frontend](./frontend.md)** - Architettura e componenti
-2. **[API](./api.md)** - Integrazione con backend
-3. **[Testing](./testing.md)** - Test frontend
+1. **[Frontend](./frontend.md)** - Architecture and components
+2. **[API](./api.md)** - Backend integration
+3. **[Testing](./testing.md)** - Frontend testing
 
-## 🔍 Ricerca Rapida
+## 🔍 Quick Search
 
-### 🚨 Risoluzione Problemi
+### 🚨 Troubleshooting
 
-| Problema | Dove Cercare |
-|----------|--------------|
-| **Ollama non funziona** | [Deployment - Troubleshooting](./deployment.md#troubleshooting) |
-| **Errori API** | [API - Gestione Errori](./api.md#gestione-errori) |
-| **Build fallisce** | [Deployment - Setup](./deployment.md#setup-ambiente-locale) |
-| **Test non passano** | [Testing](./testing.md) |
-| **Performance lente** | [Backend - Monitoring](./backend.md#monitoring) |
+| Problem | Where to Look |
+|---------|---------------|
+| **Ollama not working** | [Deployment - Troubleshooting](./deployment.md#troubleshooting) |
+| **API errors** | [API - Error Handling](./api.md#error-handling) |
+| **Build fails** | [Deployment - Setup](./deployment.md#local-environment-setup) |
+| **Tests not passing** | [Testing](./testing.md) |
+| **Slow performance** | [Backend - Monitoring](./backend.md#monitoring) |
 
-### ⚙️ Configurazioni
+### ⚙️ Configurations
 
-| Configurazione | Documento | Sezione |
-|----------------|-----------|---------|
-| **Variabili ambiente** | [Deployment](./deployment.md) | Configurazione Ambiente |
-| **CORS** | [Backend](./backend.md) | Configurazioni |
-| **Ollama** | [Deployment](./deployment.md) | Setup Ollama |
+| Configuration | Document | Section |
+|---------------|----------|---------|
+| **Environment variables** | [Deployment](./deployment.md) | Environment Configuration |
+| **CORS** | [Backend](./backend.md) | Configurations |
+| **Ollama** | [Deployment](./deployment.md) | Ollama Setup |
 | **Docker** | [Deployment](./deployment.md) | Docker |
 | **Nginx** | [Deployment](./deployment.md) | Reverse Proxy |
 
-### 🧩 Componenti e Architettura
+### 🧩 Components and Architecture
 
-| Componente | Documento | Dettagli |
-|------------|-----------|----------|
+| Component | Document | Details |
+|-----------|----------|---------|
 | **FastAPI Routes** | [Backend](./backend.md) | main.py |
-| **React Components** | [Frontend](./frontend.md) | Componenti |
+| **React Components** | [Frontend](./frontend.md) | Components |
 | **Custom Hooks** | [Frontend](./frontend.md) | Hooks |
-| **IA Service** | [Backend](./backend.md) | ai_service.py |
+| **AI Service** | [Backend](./backend.md) | ai_service.py |
 | **PDF Processing** | [Backend](./backend.md) | pdf_processor.py |
 
-## 📊 Metriche della Documentazione
+## 📊 Documentation Metrics
 
-- **Pagine totali**: 6
-- **Linee di codice documentate**: 100%
-- **Esempi di codice**: 50+
-- **Diagrammi**: 2
-- **Guide step-by-step**: 15+
+- **Total pages**: 6
+- **Documented code lines**: 100%
+- **Code examples**: 50+
+- **Diagrams**: 2
+- **Step-by-step guides**: 15+
 
-## 🤝 Come Contribuire alla Documentazione
+## 🤝 How to Contribute to Documentation
 
-### Aggiornamento Documentazione
+### Documentation Updates
 
-1. **Modifica i file Markdown** nella cartella `docs/`
-2. **Mantieni la struttura** esistente
-3. **Aggiungi esempi pratici** quando possibile
-4. **Testa le procedure** descritte
-5. **Aggiorna questo indice** se necessario
+1. **Edit Markdown files** in the `docs/` folder
+2. **Maintain existing structure**
+3. **Add practical examples** when possible
+4. **Test described procedures**
+5. **Update this index** if necessary
 
-### Standard di Scrittura
+### Writing Standards
 
-- **Linguaggio**: Italiano
-- **Tono**: Professionale ma accessibile
-- **Formato**: Markdown con emoji per sezioni
-- **Esempi**: Sempre funzionanti e testati
-- **Link**: Relativi quando possibile
+- **Language**: English
+- **Tone**: Professional but accessible
+- **Format**: Markdown with emojis for sections
+- **Examples**: Always working and tested
+- **Links**: Relative when possible
 
-### Template per Nuove Sezioni
+### Template for New Sections
 
 ```markdown
-# 🎯 Titolo Sezione
+# 🎯 Section Title
 
-## 📋 Panoramica
-Breve descrizione della sezione...
+## 📋 Overview
+Brief section description...
 
-## 🔧 Implementazione
-Dettagli tecnici...
+## 🔧 Implementation
+Technical details...
 
-## 💡 Esempi
-Esempi pratici...
+## 💡 Examples
+Practical examples...
 
 ## 🚨 Troubleshooting
-Problemi comuni e soluzioni...
+Common problems and solutions...
 ```
 
-## 📞 Supporto
+## 📞 Support
 
-Per domande sulla documentazione:
+For documentation questions:
 
-1. **Controlla** prima questo indice
-2. **Cerca** nella sezione appropriata
-3. **Consulta** il troubleshooting
-4. **Apri** un issue su GitHub se necessario
+1. **Check** this index first
+2. **Search** in the appropriate section
+3. **Consult** troubleshooting
+4. **Open** a GitHub issue if necessary
 
-## 🔄 Aggiornamenti
+## 🔄 Updates
 
-Questa documentazione viene aggiornata ad ogni release. Controlla il [CHANGELOG.md](../CHANGELOG.md) per le modifiche più recenti.
+This documentation is updated with each release. Check [CHANGELOG.md](../CHANGELOG.md) for recent changes.
 
 ---
 
-**Ultima modifica**: Dicembre 2024  
-**Versione documentazione**: 1.0  
-**Compatibile con**: Versione applicazione 3.0+ 
+**Last modified**: December 2024  
+**Documentation version**: 1.0  
+**Compatible with**: Application version 3.0+

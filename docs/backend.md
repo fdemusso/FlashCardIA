@@ -1,113 +1,113 @@
-# 🔧 Documentazione Backend
+# 🔧 Backend Documentation
 
-## 📋 Panoramica
+## 📋 Overview
 
-Il backend è sviluppato in Python utilizzando FastAPI, fornisce API REST per l'elaborazione di documenti PDF e la generazione di flashcard tramite intelligenza artificiale locale (Ollama).
+The backend is developed in Python using FastAPI, providing REST APIs for PDF document processing and flashcard generation through local artificial intelligence (Ollama).
 
-## 🏗️ Architettura
+## 🏗️ Architecture
 
-### Componenti Principali
+### Main Components
 
-- **main.py**: Entry point dell'applicazione e routing
-- **ai_service.py**: Servizio per la generazione di flashcard tramite IA
-- **models.py**: Modelli di dati e strutture
-- **validation.py**: Validazione e pulizia delle flashcard generate
-- **pdf_processor.py**: Estrazione e elaborazione del testo dai PDF
-- **config.py**: Configurazioni e costanti dell'applicazione
+- **main.py**: Application entry point and routing
+- **ai_service.py**: Service for AI-powered flashcard generation
+- **models.py**: Data models and structures
+- **validation.py**: Validation and cleaning of generated flashcards
+- **pdf_processor.py**: Text extraction and processing from PDFs
+- **config.py**: Application configurations and constants
 
-## 📄 Documentazione File per File
+## 📄 File-by-File Documentation
 
-### 🚀 main.py - Entry Point dell'Applicazione
+### 🚀 main.py - Application Entry Point
 
-**Scopo**: Gestisce il routing principale e l'orchestrazione dei servizi.
+**Purpose**: Handles main routing and service orchestration.
 
-**Endpoint Principali**:
-- `POST /upload-pdf`: Elabora file PDF e genera flashcard
-- `GET /health`: Verifica stato dell'applicazione e servizi
+**Main Endpoints**:
+- `POST /upload-pdf`: Processes PDF files and generates flashcards
+- `GET /health`: Checks application and service status
 
-**Dipendenze**:
-- FastAPI per il framework web
-- CORS middleware per la comunicazione con frontend
-- StreamingResponse per il progresso in tempo reale
+**Dependencies**:
+- FastAPI for web framework
+- CORS middleware for frontend communication
+- StreamingResponse for real-time progress
 
-### 🤖 ai_service.py - Servizio Intelligenza Artificiale
+### 🤖 ai_service.py - AI Service
 
-**Scopo**: Gestisce l'interazione con Ollama per la generazione di flashcard.
+**Purpose**: Manages interaction with Ollama for flashcard generation.
 
-**Funzioni Principali**:
-- `generate_flashcards_from_text()`: Genera flashcard da testo usando IA
-- `clean_json_response()`: Pulisce e valida le risposte JSON dall'IA
-- `check_ollama_availability()`: Verifica disponibilità del servizio Ollama
+**Main Functions**:
+- `generate_flashcards_from_text()`: Generates flashcards from text using AI
+- `clean_json_response()`: Cleans and validates JSON responses from AI
+- `check_ollama_availability()`: Verifies Ollama service availability
 
-**Caratteristiche**:
-- Prompt engineering ottimizzato per l'italiano
-- Gestione robust degli errori di parsing JSON
-- Sistema di fallback per risposte malformate
+**Features**:
+- Prompt engineering optimized for Italian
+- Robust handling of JSON parsing errors
+- Fallback system for malformed responses
 
-### 📊 models.py - Modelli di Dati
+### 📊 models.py - Data Models
 
-**Scopo**: Definisce le strutture dati utilizzate nell'applicazione.
+**Purpose**: Defines data structures used in the application.
 
-**Classi**:
-- `TextChunk`: Rappresenta una porzione di testo estratto dal PDF
-- `FlashcardData`: Struttura per i dati delle flashcard
-- `PDFStatistics`: Statistiche di elaborazione del documento
-- `ProcessingProgress`: Informazioni sul progresso di elaborazione
+**Classes**:
+- `TextChunk`: Represents a portion of text extracted from PDF
+- `FlashcardData`: Structure for flashcard data
+- `PDFStatistics`: Document processing statistics
+- `ProcessingProgress`: Processing progress information
 
-### ✅ validation.py - Validazione Flashcard
+### ✅ validation.py - Flashcard Validation
 
-**Scopo**: Valida e corregge le flashcard generate dall'IA.
+**Purpose**: Validates and corrects AI-generated flashcards.
 
-**Funzioni**:
-- `validate_flashcards()`: Valida una lista di flashcard
+**Functions**:
+- `validate_flashcards()`: Validates a list of flashcards
 
-**Controlli Effettuati**:
-- Verifica campi obbligatori
-- Validazione tipi di domande
-- Controllo coerenza opzioni multiple choice
-- Gestione indici risposta
-- Pulizia testi e formattazione
+**Checks Performed**:
+- Verifies required fields
+- Validates question types
+- Checks multiple choice option consistency
+- Manages answer indices
+- Cleans texts and formatting
 
-### 📑 pdf_processor.py - Elaborazione PDF
+### 📑 pdf_processor.py - PDF Processing
 
-**Scopo**: Estrae e processa il testo dai documenti PDF.
+**Purpose**: Extracts and processes text from PDF documents.
 
-**Funzioni**:
-- `extract_text_from_pdf()`: Estrae testo pagina per pagina
-- `clean_text()`: Pulisce il testo da caratteri indesiderati
-- `merge_chunks_intelligently()`: Raggruppa il testo in porzioni ottimali
+**Functions**:
+- `extract_text_from_pdf()`: Extracts text page by page
+- `clean_text()`: Cleans text from unwanted characters
+- `merge_chunks_intelligently()`: Groups text into optimal portions
 
-**Caratteristiche**:
-- Pulizia automatica del testo estratto
-- Gestione robusta degli errori di lettura
-- Ottimizzazione per l'elaborazione IA
+**Features**:
+- Automatic text cleaning
+- Robust handling of reading errors
+- Optimization for AI processing
 
-### ⚙️ config.py - Configurazioni
+### ⚙️ config.py - Configurations
 
-**Scopo**: Centralizza tutte le configurazioni dell'applicazione.
+**Purpose**: Centralizes all application configurations.
 
-**categorie**:
-- Configurazioni CORS e networking
-- Parametri per il modello IA (Ollama)
-- Limiti e soglie per l'elaborazione PDF
-- Validazioni e parametri flashcard
+**Categories**:
+- CORS and networking configurations
+- AI model parameters (Ollama)
+- PDF processing limits and thresholds
+- Flashcard validations and parameters
 
 ## 🔌 API Endpoints
 
 ### POST /upload-pdf
 
-**Descrizione**: Elabora un file PDF e genera flashcard tramite IA.
+**Description**: Processes a PDF file and generates flashcards through AI.
 
-**Parametri**:
-- `file`: File PDF (multipart/form-data, max 10MB)
+**Parameters**:
+- `file`: PDF file (multipart/form-data, max 10MB)
 
-**Risposta**: Stream di eventi JSON (NDJSON)
-- Eventi di progresso durante l'elaborazione
-- Risultato finale con flashcard e statistiche
+**Response**: JSON event stream (NDJSON)
+- Progress events during processing
+- Final result with flashcards and statistics
 
-**Eventi**:
+**Events**:
 ```json
-// Progresso
+// Progress
 {
   "type": "progress",
   "data": {
@@ -117,7 +117,7 @@ Il backend è sviluppato in Python utilizzando FastAPI, fornisce API REST per l'
   }
 }
 
-// Completamento
+// Completion
 {
   "type": "complete",
   "data": {
@@ -130,18 +130,18 @@ Il backend è sviluppato in Python utilizzando FastAPI, fornisce API REST per l'
   }
 }
 
-// Errore
+// Error
 {
   "type": "error",
-  "data": "Messaggio di errore"
+  "data": "Error message"
 }
 ```
 
 ### GET /health
 
-**Descrizione**: Verifica lo stato dell'applicazione e dei servizi dipendenti.
+**Description**: Checks the status of the application and dependent services.
 
-**Risposta**:
+**Response**:
 ```json
 {
   "status": "healthy",
@@ -152,75 +152,75 @@ Il backend è sviluppato in Python utilizzando FastAPI, fornisce API REST per l'
 }
 ```
 
-## 🚦 Gestione Errori
+## 🚦 Error Handling
 
-### Tipologie di Errori
+### Error Types
 
-1. **Errori di Validazione File** (400):
-   - File non PDF
-   - Dimensioni eccessive
-   - Contenuto insufficiente
+1. **File Validation Errors** (400):
+   - Non-PDF file
+   - File too large
+   - Insufficient content
 
-2. **Errori di Servizio IA** (500):
-   - Ollama non disponibile
-   - Modello non trovato
-   - Timeout generazione
+2. **AI Service Errors** (500):
+   - Ollama unavailable
+   - Model not found
+   - Generation timeout
 
-3. **Errori di Elaborazione** (500):
-   - PDF corrotto o illeggibile
-   - Errori parsing contenuto
+3. **Processing Errors** (500):
+   - Corrupted or unreadable PDF
+   - Content parsing errors
 
 ### Logging
 
-Tutti gli errori sono loggati con informazioni dettagliate per il debugging:
-- Livello INFO per operazioni normali
-- Livello WARNING per anomalie non bloccanti
-- Livello ERROR per errori critici
+All errors are logged with detailed information for debugging:
+- INFO level for normal operations
+- WARNING level for non-blocking anomalies
+- ERROR level for critical errors
 
-## 🔧 Configurazioni Importanti
+## 🔧 Important Configurations
 
-### Modello IA
+### AI Model
 ```python
-AI_MODEL_NAME = 'gemma3:4b-it-qat'  # Modello Ollama ottimizzato per italiano
+AI_MODEL_NAME = 'gemma3:4b-it-qat'  # Ollama model optimized for Italian
 OLLAMA_OPTIONS = {
-    "temperature": 0.1,    # Bassa creatività per coerenza
-    "num_predict": 1000    # Limite token risposta
+    "temperature": 0.1,    # Low creativity for consistency
+    "num_predict": 1000    # Response token limit
 }
 ```
 
-### Limiti di Elaborazione
+### Processing Limits
 ```python
-MIN_WORDS_FOR_PROCESSING = 50      # Minimo parole per elaborazione
-MAX_WORDS_PER_CHUNK = 800          # Massimo parole per chunk IA
-MAX_FLASHCARDS_LIMIT = 20          # Limite massimo flashcard
+MIN_WORDS_FOR_PROCESSING = 50      # Minimum words for processing
+MAX_WORDS_PER_CHUNK = 800          # Maximum words per AI chunk
+MAX_FLASHCARDS_LIMIT = 20          # Maximum flashcard limit
 ```
 
-### Validazione Flashcard
+### Flashcard Validation
 ```python
 VALID_CARD_TYPES = ["multipla", "vero_falso", "aperta"]
-MULTIPLE_CHOICE_OPTIONS_COUNT = 4   # Numero opzioni multiple choice
-MIN_QUESTION_LENGTH = 5             # Lunghezza minima domanda
+MULTIPLE_CHOICE_OPTIONS_COUNT = 4   # Number of multiple choice options
+MIN_QUESTION_LENGTH = 5             # Minimum question length
 ```
 
-## 🏃‍♂️ Avvio e Deploy
+## 🏃‍♂️ Startup and Deploy
 
-### Sviluppo Locale
+### Local Development
 ```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Produzione
+### Production
 ```bash
 pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
-### Prerequisiti
+### Prerequisites
 - Python 3.8+
-- Ollama installato e configurato
-- Modello `gemma3:4b-it-qat` scaricato
+- Ollama installed and configured
+- `gemma3:4b-it-qat` model downloaded
 
 ## 🧪 Testing
 
@@ -229,20 +229,20 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 curl http://localhost:8000/health
 ```
 
-### Test Upload PDF
+### Test PDF Upload
 ```bash
 curl -X POST -F "file=@test.pdf" http://localhost:8000/upload-pdf
 ```
 
 ## 📊 Monitoring
 
-### Metriche Importanti
-- Tempo di elaborazione per PDF
-- Successo rate generazione flashcard
-- Disponibilità servizio Ollama
-- Utilizzo memoria durante elaborazione
+### Important Metrics
+- PDF processing time
+- Flashcard generation success rate
+- Ollama service availability
+- Memory usage during processing
 
-### Log Key
-- `INFO`: Operazioni normali e milestone
-- `WARNING`: Fallback e anomalie gestite
-- `ERROR`: Errori che impediscono l'elaborazione 
+### Key Logs
+- `INFO`: Normal operations and milestones
+- `WARNING`: Fallbacks and handled anomalies
+- `ERROR`: Errors preventing processing 

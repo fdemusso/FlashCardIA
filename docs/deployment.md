@@ -1,116 +1,116 @@
-# 🚀 Guida al Deployment
+# 🚀 Deployment Guide
 
-## 📋 Panoramica
+## 📋 Overview
 
-Questa guida copre il deployment completo dell'applicazione Generatore di Flashcard IA, dalla configurazione locale allo sviluppo fino al deployment in produzione.
+This guide covers the complete deployment of the AI Flashcard Generator application, from local development configuration to production deployment.
 
-## 🛠️ Prerequisiti di Sistema
+## 🛠️ System Prerequisites
 
-### Software Richiesto
+### Required Software
 
-| Software | Versione Minima | Scopo |
-|----------|----------------|-------|
-| **Python** | 3.8+ | Backend FastAPI |
-| **Node.js** | 16+ | Frontend React |
-| **npm** | 8+ | Package manager frontend |
-| **Ollama** | Latest | Servizio IA locale |
+| Software | Minimum Version | Purpose |
+|----------|----------------|---------|
+| **Python** | 3.8+ | FastAPI Backend |
+| **Node.js** | 16+ | React Frontend |
+| **npm** | 8+ | Frontend package manager |
+| **Ollama** | Latest | Local AI service |
 | **Git** | 2.0+ | Version control |
 
-### Hardware Raccomandato
+### Recommended Hardware
 
-#### Sviluppo Locale
-- **RAM**: 8GB minimo, 16GB raccomandato
-- **Storage**: 10GB liberi (modelli IA occupano spazio)
-- **CPU**: 4 core, supporto AVX per performance IA
+#### Local Development
+- **RAM**: 8GB minimum, 16GB recommended
+- **Storage**: 10GB free (AI models take space)
+- **CPU**: 4 cores, AVX support for AI performance
 
-#### Produzione
-- **RAM**: 16GB minimo, 32GB raccomandato
+#### Production
+- **RAM**: 16GB minimum, 32GB recommended
 - **Storage**: 50GB+ SSD
-- **CPU**: 8+ core, GPU opzionale per IA
-- **Network**: Banda stabile per upload PDF
+- **CPU**: 8+ cores, optional GPU for AI
+- **Network**: Stable bandwidth for PDF uploads
 
-## 🏠 Setup Ambiente Locale
+## 🏠 Local Environment Setup
 
-### 1. Clone del Repository
+### 1. Repository Clone
 
 ```bash
-# Clone del progetto
+# Clone the project
 git clone <repository-url>
 cd IA-flashcard
 
-# Verifica struttura
+# Verify structure
 ls -la
 ```
 
-### 2. Setup Ollama
+### 2. Ollama Setup
 
 ```bash
-# Installazione Ollama (macOS/Linux)
+# Ollama installation (macOS/Linux)
 curl -fsSL https://ollama.ai/install.sh | sh
 
-# Windows: Scarica da https://ollama.ai/download
+# Windows: Download from https://ollama.ai/download
 
-# Avvio servizio
+# Start service
 ollama serve
 
-# Download modello (in un nuovo terminale)
+# Download model (in a new terminal)
 ollama pull gemma3:4b-it-qat
 
-# Verifica installazione
+# Verify installation
 ollama list
 ```
 
-### 3. Setup Backend
+### 3. Backend Setup
 
 ```bash
-# Navigazione alla cartella backend
+# Navigate to backend folder
 cd backend
 
-# Creazione ambiente virtuale
+# Create virtual environment
 python -m venv venv
 
-# Attivazione ambiente virtuale
+# Activate virtual environment
 # Linux/macOS:
 source venv/bin/activate
 # Windows:
 venv\Scripts\activate
 
-# Installazione dipendenze
+# Install dependencies
 pip install -r requirements.txt
 
-# Verifica installazione
-python -c "import fastapi, ollama, PyPDF2; print('Dipendenze OK')"
+# Verify installation
+python -c "import fastapi, ollama, PyPDF2; print('Dependencies OK')"
 
-# Test avvio backend
+# Test backend startup
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 4. Setup Frontend
+### 4. Frontend Setup
 
 ```bash
-# Navigazione alla cartella frontend (nuovo terminale)
+# Navigate to frontend folder (new terminal)
 cd frontend
 
-# Installazione dipendenze
+# Install dependencies
 npm install
 
-# Verifica installazione
+# Verify installation
 npm list --depth=0
 
-# Test avvio frontend
+# Test frontend startup
 npm start
 ```
 
-### 5. Verifica Setup Completo
+### 5. Complete Setup Verification
 
 ```bash
-# Test health check backend
+# Test backend health check
 curl http://localhost:8000/health
 
-# Verifica frontend
-# Apri http://localhost:3000 nel browser
+# Verify frontend
+# Open http://localhost:3000 in browser
 
-# Test upload (con file PDF di prova)
+# Test upload (with test PDF file)
 curl -X POST -F "file=@test.pdf" http://localhost:8000/upload-pdf
 ```
 
