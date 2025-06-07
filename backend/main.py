@@ -155,12 +155,20 @@ def generate_flashcards_from_text(text: str, model_name: str) -> List[Dict]:
         logger.info(f"Generazione flashcard per testo di {len(text.split())} parole")
         
         # Prompt più semplice e diretto
-        simple_prompt = f"""Analizza questo testo e crea 3 flashcard in formato JSON:
+        simple_prompt = f"""Analizza questo testo e crea 3 flashcard in formato JSON.
+Per ogni flashcard, usa uno dei seguenti tipi:
+- "aperta": per domande che richiedono una risposta libera
+- "vero_falso": per affermazioni da verificare
+- "multipla": per domande con 4 opzioni di risposta
 
 {text[:1000]}
 
-Rispondi SOLO con array JSON senza markdown:
-[{{"domanda":"...", "risposta":"...", "tipo":"aperta", "punteggio":3}}]"""
+Rispondi SOLO con array JSON senza markdown, per esempio:
+[
+  {{"domanda":"Qual è la capitale d'Italia?", "risposta":"Roma", "tipo":"aperta", "punteggio":3}},
+  {{"domanda":"La Terra è piatta", "risposta":"falso", "tipo":"vero_falso", "punteggio":2}},
+  {{"domanda":"Quale di questi è un pianeta?", "risposta":"Marte", "tipo":"multipla", "opzioni":["Marte", "Luna", "Sole", "Stella"], "punteggio":3}}
+]"""
 
         logger.info(f"Invio prompt a Ollama (lunghezza: {len(simple_prompt)} caratteri)")
         
