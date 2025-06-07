@@ -8,6 +8,7 @@ interface Flashcard {
   tipo: 'multipla' | 'vero_falso' | 'aperta';
   opzioni?: string[];
   punteggio: number;
+  giustificazione?: string;
 }
 
 interface Statistics {
@@ -276,10 +277,26 @@ const App: React.FC = () => {
           />
         )}
 
+        {/* Visualizzazione risposte aperte */}
         {showAnswer && card.tipo === 'aperta' && (
           <div className="mt-6 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
             <h3 className="font-bold text-gray-800 mb-2">Risposta corretta:</h3>
             <p className="text-gray-700">{card.risposta}</p>
+          </div>
+        )}
+
+        {/* Visualizzazione giustificazioni per vero/falso e multipla */}
+        {showAnswer && (card.tipo === 'vero_falso' || card.tipo === 'multipla') && card.giustificazione && (
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+            <h3 className="font-bold text-blue-800 mb-2">Giustificazione:</h3>
+            <p className="text-blue-700">{card.giustificazione}</p>
+            {card.tipo === 'multipla' && (
+              <div className="mt-3 p-3 bg-green-100 rounded-lg">
+                <p className="text-green-800 font-medium">
+                  <span className="font-bold">Risposta corretta:</span> {card.risposta}
+                </p>
+              </div>
+            )}
           </div>
         )}
 
@@ -292,12 +309,25 @@ const App: React.FC = () => {
             ← Precedente
           </button>
           
-          <button
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            onClick={() => setShowAnswer(!showAnswer)}
-          >
-            {showAnswer ? 'Nascondi Risposta' : 'Mostra Risposta'}
-          </button>
+          {/* Pulsante centrale: diverso per ogni tipo */}
+          {card.tipo === 'aperta' && (
+            <button
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              onClick={() => setShowAnswer(!showAnswer)}
+            >
+              {showAnswer ? 'Nascondi Risposta' : 'Mostra Risposta'}
+            </button>
+          )}
+          
+          {(card.tipo === 'vero_falso' || card.tipo === 'multipla') && (
+            <button
+              className="px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50"
+              onClick={() => setShowAnswer(!showAnswer)}
+              disabled={!userAnswer}
+            >
+              {showAnswer ? 'Nascondi Giustificazione' : 'Giustifica Risposta'}
+            </button>
+          )}
           
           <button
             className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50 hover:bg-gray-300 transition-colors"
