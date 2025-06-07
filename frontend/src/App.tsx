@@ -27,6 +27,11 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [generationProgress, setGenerationProgress] = useState<{
+    current_part: number;
+    total_parts: number;
+    percentage: number;
+  } | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -58,6 +63,7 @@ const App: React.FC = () => {
     setLoading(true);
     setError(null);
     setLoadingMessage('Caricamento del PDF...');
+    setGenerationProgress(null);
     
     const formData = new FormData();
     formData.append('file', file);
@@ -69,32 +75,51 @@ const App: React.FC = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        timeout: 120000, // 2 minuti di timeout
+        timeout: 600000, // 10 minuti di timeout
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
             const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
             setLoadingMessage(`Caricamento PDF: ${percentCompleted}%`);
           }
-        }
+        },
+        responseType: 'text'
       });
-      
+
       setLoadingMessage('Generazione delle flashcard in corso...');
       
-      if (response.data.flashcards && Array.isArray(response.data.flashcards)) {
-        setFlashcards(response.data.flashcards);
-        setStatistics(response.data.statistics || null);
-        setCurrentCard(0);
-        setShowAnswer(false);
-        setScore(0);
-        setLoadingMessage('');
-      } else {
-        throw new Error('Formato risposta non valido dal server');
+      // Processa la risposta streaming
+      const lines = response.data.split('\n').filter((line: string) => line.trim());
+      let lastProgress = 0;
+      
+      for (const line of lines) {
+        try {
+          const data = JSON.parse(line);
+          
+          if (data.type === 'progress') {
+            setGenerationProgress(data.data);
+            setLoadingMessage(`Generazione delle flashcard: ${data.data.percentage}% (Parte ${data.data.current_part} di ${data.data.total_parts})`);
+            lastProgress = data.data.percentage;
+          } else if (data.type === 'complete') {
+            setFlashcards(data.data.flashcards);
+            setStatistics(data.data.statistics);
+            setCurrentCard(0);
+            setShowAnswer(false);
+            setScore(0);
+            setLoadingMessage('');
+            setGenerationProgress(null);
+          } else if (data.type === 'error') {
+            throw new Error(data.data);
+          }
+        } catch (e) {
+          console.error('Errore nel parsing della risposta:', e);
+          throw new Error('Errore nel formato della risposta dal server');
+        }
       }
     } catch (error) {
       console.error('Errore durante il caricamento:', error);
       if (axios.isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
-          setError('Timeout: Il file è troppo grande o la connessione è lenta');
+          setError('Timeout: L\'elaborazione del PDF e la generazione delle flashcard richiede più tempo del previsto. Per favore, riprova con un file più piccolo o attendi più a lungo.');
         } else {
           setError(error.response?.data?.detail || 'Errore durante la generazione delle flashcard');
         }
@@ -104,6 +129,7 @@ const App: React.FC = () => {
     } finally {
       setLoading(false);
       setLoadingMessage('');
+      setGenerationProgress(null);
     }
   };
 
@@ -184,10 +210,16 @@ const App: React.FC = () => {
                 key={index}
                 className={`w-full text-left p-3 rounded border transition-colors ${
                   userAnswer === opzione 
-                    ? 'bg-blue-100 border-blue-300' 
+                    ? opzione === card.risposta
+                      ? 'bg-green-100 border-green-300 text-green-800'
+                      : 'bg-red-100 border-red-300 text-red-800'
                     : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
                 }`}
-                onClick={() => setUserAnswer(opzione)}
+                onClick={() => {
+                  setUserAnswer(opzione);
+                  setShowAnswer(true);
+                }}
+                disabled={showAnswer}
               >
                 <span className="font-medium mr-2">{String.fromCharCode(65 + index)}.</span>
                 {opzione}
@@ -201,10 +233,16 @@ const App: React.FC = () => {
             <button
               className={`flex-1 px-6 py-3 rounded border transition-colors ${
                 userAnswer === 'vero' 
-                  ? 'bg-green-100 border-green-300 text-green-800' 
+                  ? userAnswer === card.risposta
+                    ? 'bg-green-100 border-green-300 text-green-800'
+                    : 'bg-red-100 border-red-300 text-red-800'
                   : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
               }`}
-              onClick={() => setUserAnswer('vero')}
+              onClick={() => {
+                setUserAnswer('vero');
+                setShowAnswer(true);
+              }}
+              disabled={showAnswer}
             >
               <FaCheckCircle className="inline mr-2" />
               Vero
@@ -212,10 +250,16 @@ const App: React.FC = () => {
             <button
               className={`flex-1 px-6 py-3 rounded border transition-colors ${
                 userAnswer === 'falso' 
-                  ? 'bg-red-100 border-red-300 text-red-800' 
+                  ? userAnswer === card.risposta
+                    ? 'bg-green-100 border-green-300 text-green-800'
+                    : 'bg-red-100 border-red-300 text-red-800'
                   : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
               }`}
-              onClick={() => setUserAnswer('falso')}
+              onClick={() => {
+                setUserAnswer('falso');
+                setShowAnswer(true);
+              }}
+              disabled={showAnswer}
             >
               ✗ Falso
             </button>
@@ -232,24 +276,10 @@ const App: React.FC = () => {
           />
         )}
 
-        {showAnswer && (
+        {showAnswer && card.tipo === 'aperta' && (
           <div className="mt-6 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
             <h3 className="font-bold text-gray-800 mb-2">Risposta corretta:</h3>
             <p className="text-gray-700">{card.risposta}</p>
-            {userAnswer && card.tipo !== 'aperta' && (
-              <div className="mt-3 pt-3 border-t border-gray-200">
-                <span className={`text-sm font-medium ${
-                  userAnswer.toLowerCase() === card.risposta.toLowerCase() 
-                    ? 'text-green-600' 
-                    : 'text-red-600'
-                }`}>
-                  {userAnswer.toLowerCase() === card.risposta.toLowerCase() 
-                    ? '✓ Risposta corretta!' 
-                    : '✗ Risposta sbagliata'
-                  }
-                </span>
-              </div>
-            )}
           </div>
         )}
 
@@ -320,6 +350,19 @@ const App: React.FC = () => {
                   <FaSpinner className="animate-spin mr-2" />
                   {loadingMessage || 'Elaborazione in corso...'}
                 </div>
+                {generationProgress && (
+                  <div className="mt-2">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div 
+                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" 
+                        style={{ width: `${generationProgress.percentage}%` }}
+                      ></div>
+                    </div>
+                    <div className="text-sm mt-1 text-center">
+                      {generationProgress.percentage}% completato
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             
